@@ -1,0 +1,7 @@
+{
+  "name": "shaweelAddons",
+  "creator": "shaweel",
+  "entry": "index.js",
+  "version": "1.0.0",
+  "requires": ["Vigilance"]
+}
