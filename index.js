@@ -97,7 +97,7 @@ function checkms() {
 register("command", checkms).setName("ms")
 
 
-const requirementSets = [["restart", "rs", "reset", "slow", "bad"], ["ss", "dev", "simon says", "simonsays", "device"]]
+const requirementSets = [["restart", "rs", "reset", "slow"], ["ss", "dev", "simon says", "simonsays", "device"]]
 
 function isValidBadSS(msg) {
     for (let requirementSet of requirementSets) {
@@ -109,11 +109,11 @@ function isValidBadSS(msg) {
         }
         if (passed == false) return false
     }
+    if (msg.includes("[BOSS]")) return false
     return true
 }
 
 register("chat", (message) => {
-    print(message)
     if (!message.startsWith("Sending to server")) return
     cooldown = true
     setTimeout(() => {
@@ -126,7 +126,10 @@ register("chat", (message) => {
 register("chat", (message) => {
     if (message == undefined) return
     if (isValidBadSS(message.toLowerCase()) == false) return
+    if (message.includes("[BOSS]")) return
     resetSSAlert()
+    ChatLib.chat("SS Reset, source: ")
+    ChatLib.chat(message)
 }).setCriteria("${message}")
 
 register("chat", seaCreatureAlert).setCriteria("A Squid appeared.")
