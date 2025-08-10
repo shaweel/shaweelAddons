@@ -5,3 +5,4 @@ The goofiest SkyBlock mod out there with features never seen before like:
 - SS Reset Alert: Notifies you when someone says that ss reset in a dungeon
 - Low Health: Notifies you when you have low health
 - Class Milestone Reminder: Shows a title before you get milestone 3, useful for archers using rcm in clear
+![alt](https://i.imgur.com/HfWSFn3.png)
