@@ -59,7 +59,6 @@ function seaCreatureAlert() {
 }
 
 function resetSSAlert() {
-    if (!checkDungeon()) return
     if (Settings.sstitle == true)
         Client.showTitle(Settings.sstext, "", "5", "20", "5")
     if (Settings.sssound == true)
@@ -127,9 +126,8 @@ register("chat", (message) => {
     if (message == undefined) return
     if (isValidBadSS(message.toLowerCase()) == false) return
     if (message.includes("[BOSS]")) return
+    if (!checkDungeon()) return
     resetSSAlert()
-    ChatLib.chat("SS Reset, source: ")
-    ChatLib.chat(message)
 }).setCriteria("${message}")
 
 register("chat", seaCreatureAlert).setCriteria("A Squid appeared.")
