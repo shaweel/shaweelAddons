@@ -1,14 +1,182 @@
 import Settings from "./config"
 
+positions = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/positions.json")
+positions = JSON.parse(positions)
 
+editGui = new Gui()
 cooldown = false
 msBelow3 = false
+movingKatana = false
+
+const katanaHud = new Display()
+katanaHud.setRenderX(positions.katanaHud.x)
+katanaHud.setRenderY(positions.katanaHud.y)
+katanaHud.setLine(0, "")
+katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+katanaHud.getLine(0).setShadow(true)
 
 
-function sleep(delay) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
+function isIn(x, y, width, height, x2, y2) {
+    minX = x
+    maxX = x+width
+    minY = y
+    maxY = y+height
+    if (x2 >= minX && x <= maxX && y2 >= minY && y <= maxY) {
+        return true
+    }
+    return false
 }
+
+offsetX = 0
+offsetY = 0
+oldMousePos = {x:-1,y:-1}
+isDragging = false
+
+register("scrolled", (mouseX, mouseY, direction) => {
+    width = katanaHud.getWidth()
+    height = katanaHud.getHeight()
+    if (!editGui.isOpen()) return
+    if (!isIn(positions.katanaHud.x, positions.katanaHud.y, width, height, mouseX, mouseY)) return
+    amount = direction/10
+    if (positions.katanaHud.scale <= 0.25 && amount == -0.1) return
+    if (positions.katanaHud.scale >= 10 && amount == 0.1) return
+    positions.katanaHud.scale += amount
+    katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+    katanaHud.setShouldRender(false)
+    katanaHud.setShouldRender(true)
+
+})
+
+register("guiMouseClick", (mouseX, mouseY, mouseButton) => {
+    width = katanaHud.getWidth()
+    height = katanaHud.getHeight()
+    if (!editGui.isOpen()) return
+    if (!isIn(positions.katanaHud.x, positions.katanaHud.y, width, height, mouseX, mouseY)) return
+    if (mouseButton != 0) return
+    isDragging = true
+
+    offsetX = mouseX - positions.katanaHud.x
+    offsetY = mouseY - positions.katanaHud.y
+})
+
+
+register("tick", () => {    
+    if (!isDragging) return
+    mouseX = Client.getMouseX()
+    mouseY = Client.getMouseY()
+    if (oldMousePos.x == mouseX) return
+    if (oldMousePos.y == mouseY) return
+    oldMousePos.x = mouseX
+    oldMousePos.y = mouseY
+    positions.katanaHud.x = mouseX-offsetX
+    positions.katanaHud.y = mouseY-offsetY
+    katanaHud.setRenderX(positions.katanaHud.x)
+    katanaHud.setRenderY(positions.katanaHud.y)
+    katanaHud.setShouldRender(false)
+    katanaHud.setShouldRender(true)
+})
+
+register("guiMouseRelease", (mouseX, mouseY, mouseButton) => {
+    width = katanaHud.getWidth()
+    height = katanaHud.getHeight()
+    if (!editGui.isOpen()) return
+    if (!isIn(positions.katanaHud.x, positions.katanaHud.y, width, height, mouseX, mouseY)) return
+    if (mouseButton != 0) return
+    isDragging = false
+    jsonPos = JSON.stringify(positions)
+    FileLib.write("./config/ChatTriggers/modules/shaweelAddons/positions.json", jsonPos)
+})
+
+
+function startMovingKatana() {
+    editGui.open()
+    katanaHud.setShouldRender(true)
+    katanaHud.setLine(0, "&cKatana Ability NOT activated")
+    katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+    katanaHud.getLine(0).setShadow(true)
+}
+
+register("command", startMovingKatana).setCommandName("shaweelgui")
+
+countingDown = -1
+
+function updateKatanaHud() {
+    if (editGui.isOpen()) return
+    katanaHud.setShouldRender(Settings.katanaHud)
+    hasKatana = false
+    itemId = Player.getHeldItem()
+    if (itemId != null) {
+        if (itemId.getNBT() != null) {
+            try {
+                item = String(itemId.getNBT().getTag("id"))
+                itemId = String(itemId.getNBT().getTag("tag").getTag("ExtraAttributes").getTag("id"))
+            } catch (error) {
+                print("[shaweelAddons] Held item doesn't have a SkyBlock ID, assuming user isn't on skyblock and skipping feature.")
+                return
+            }
+            while (true) {
+                if (!itemId.includes('"')) break
+                itemId = itemId.replace('"', "")
+            }
+            while (true) {
+                if (!item.includes('"')) break
+                item = item.replace('"', "")
+            }
+        }
+    }
+    if (countingDown > -1) {
+        if (countingDown <= 0 && (itemId == "ATOMSPLIT_KATANA" || itemId == "VORPAL_KATANA" || itemId == "VOIDEDGE_KATANA") && item == "minecraft:diamond_sword") {
+            katanaHud.setLine(0, "&cKatana Ability NOT activated")
+            katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+            katanaHud.getLine(0).setShadow(true)
+            countingDown = -1
+            return
+        }
+        if (countingDown <= 0 && (itemId == "ATOMSPLIT_KATANA" || itemId == "VORPAL_KATANA" || itemId == "VOIDEDGE_KATANA") && item == "minecraft:golden_sword") {
+            katanaHud.setLine(0, "&aKatana Ability activated (0)")
+            katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+            katanaHud.getLine(0).setShadow(true)
+            return
+        }
+        
+        if (countingDown <= 0) {
+            katanaHud.setLine(0, "&aKatana Ability activated (0)")
+            katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+            katanaHud.getLine(0).setShadow(true)
+            countingDown = -1
+            return
+        }
+        countingDown -= 0.05
+        displayCount = Math.round(countingDown*10)/10
+        katanaHud.setLine(0, "&aKatana Ability activated ("+displayCount+")")
+        katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+        katanaHud.getLine(0).setShadow(true)
+        return
+    }
+    if (itemId == "ATOMSPLIT_KATANA" || itemId == "VORPAL_KATANA" || itemId == "VOIDEDGE_KATANA") {
+        if (item == "minecraft:diamond_sword") {
+            katanaHud.setLine(0, "&cKatana Ability NOT activated")
+            katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+            katanaHud.getLine(0).setShadow(true)
+        } else if (item == "minecraft:golden_sword" && countingDown == -1) {
+            katanaHud.setLine(0, "&aKatana Ability activated (4)")
+            countingDown = 4
+            katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+            katanaHud.getLine(0).setShadow(true)
+        }
+
+        
+    } else {
+        katanaHud.setLine(0, "")
+        katanaHud.getLine(0).setScale(positions.katanaHud.scale)
+        katanaHud.getLine(0).setShadow(true)
+    }
+    katanaHud.setRenderX(positions.katanaHud.x)
+    katanaHud.setRenderY(positions.katanaHud.y)
+}
+
+register("tick", updateKatanaHud)
+
 
 const scaSound = new Sound({source: "shaweeladdons.seaCreature.ogg"})
 const pssSound = new Sound({source: "shaweeladdons.ssFail.ogg"})
@@ -42,19 +210,31 @@ register("actionBar", event => {
     ratio = health/maxHealth
     if (cooldown) return    
     if (ratio > 0.5) return
+    if (isNaN(ratio)) return
+    print("[shaweelAddons] Alerting Low Health")
+    print("health")
+    print(health)
+    print("maxHealth")
+    print(maxHealth)
+    print("ratio")
+    print(ratio)
 
     if (Settings.lhsound) {
+        print("[shaweelAddons] Playing low health sound")
         lowHealthSound.play()
     }
     if (!Settings.lhtitle) return
+    print("[shaweelAddons] Showing low health title")
     Client.showTitle(Settings.lhtext, "", "0", "20", "5")
 })
 
 
 function seaCreatureAlert() {
     if (Settings.sctitle == true)
+        print("[shaweelAddons] Showing sea creature title")
         Client.showTitle(Settings.sctext, "", "5", "20", "5")
     if (Settings.scsound == true)
+        print("[shaweelAddons] Playing sea creature sound")
         scaSound.play()
 }
 
@@ -113,20 +293,25 @@ function isValidBadSS(msg) {
 }
 
 register("chat", (message) => {
-    if (!message.startsWith("Sending to server")) return
+    if (!message.startsWith("Sending to server") && !message.startsWith("Отправление на сервер")) return
     cooldown = true
     setTimeout(() => {
         cooldown = false
-    }, 2000);
+    }, 5000)
 
 
 }).setCriteria("${message}")
 
 register("chat", (message) => {
     if (message == undefined) return
-    if (isValidBadSS(message.toLowerCase()) == false) return
-    if (message.includes("[BOSS]")) return
+    message = message.toLowerCase()
+    if (isValidBadSS(message) == false) return
+    if (message.includes("[boss]")) return
+    if (message.includes("bers")) return
+    if (message.includes("class")) return
     if (!checkDungeon()) return
+    print("[shaweelAddons] Alerting SS Reset, source: ")
+    print(message)
     resetSSAlert()
 }).setCriteria("${message}")
 
