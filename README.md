@@ -1,4 +1,4 @@
-# shaweel Addons
+# shaweelAddons
 The goofiest SkyBlock mod out there with features never seen before like:
 ## Features
 - Sea Creature Alert: Notifies you whenever you catch a sea creature
