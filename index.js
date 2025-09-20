@@ -77,6 +77,7 @@ register("tick", () => {
 /*
 0 - katanaHud
 1 - Splits
+2 - chestProfit
 */
 
 function roundToDecimals(num, amount) {
@@ -710,7 +711,6 @@ function getProfit(name) {
     if (profit == null) profit = 0
     return profit
 }
-
 register("tick", () => {
     if (editGui.isOpen()) return
     if (inChestMenu()) return
@@ -798,7 +798,7 @@ register("tick", () => {
     elements[2].getLine(index+3).setScale(positions.chestProfit.scale)
     elements[2].getLine(index+3).setShadow(true)
 })
-
+bestChestName=null
 register("tick", () => {
     if (editGui.isOpen()) return
     if (inChest()) return
@@ -834,7 +834,24 @@ register("tick", () => {
         chestName = chest.getName()
         if (!chestName.includes(best)) continue
         chest.setName(chestName+" &a[BEST]")
-        chest.setStackSize(64)
+        bestChestName = chest.getName()
+    }
+})
+
+register("renderSlot", slot => {
+    if (!Settings.chestProfit) return
+    if (!slot.getInventory().getName().includes("The Catacombs")) return
+    found = false
+    citem = slot.getItem()
+    if (!citem) return
+    cname = citem.getName()
+    if (!bestChestName) return
+    if (citem.getName()==bestChestName) {
+        found = true
+    }
+
+    if (found) {
+        Renderer.drawRect(Renderer.color(0, 255, 0, 100), slot.getDisplayX(), slot.getDisplayY(), 16, 16)
     }
 })
 
