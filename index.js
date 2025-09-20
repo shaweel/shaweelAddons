@@ -141,7 +141,7 @@ bossEnd=["[BOSS] Bonzo: Alright, maybe I'm just weak after all..", "[BOSS] Scarf
 register("chat", (msg) => {
     if (bossStart.includes(ChatLib.removeFormatting(msg))) {
         chatLog("&aEnter &7phase of dungeon completed in "+formatNumber(enterTime)+"s")
-        debugLog("&bMaxor &7phase of dungeon started.")
+        debugLog("&bBoss &7phase of dungeon started.")
         f7Split = "Maxor"
     }
     if (bossEnd.includes(ChatLib.removeFormatting(msg))) {
@@ -887,7 +887,10 @@ register("chat", () => {
 
 watcherOpen = ["[BOSS] The Watcher: Congratulations, you made it through the Entrance.", "[BOSS] The Watcher: Ah, you've finally arrived.", "[BOSS] The Watcher: Ah, we meet again...", "[BOSS] The Watcher: So you made it this far... interesting.", "[BOSS] The Watcher: You've managed to scratch and claw your way here, eh?", "[BOSS] The Watcher: I'm starting to get tired of seeing you around here...", "[BOSS] The Watcher: Oh.. hello?", "[BOSS] The Watcher: Things feel a little more roomy now, eh?"]
 register("chat", (msg) => {
-    if (!watcherOpen.includes(ChatLib.removeFormatting(msg))) return
+    msg = ChatLib.removeFormatting(msg)
+    if (!watcherOpen.includes(msg)) {
+        return
+    }
     chatLog("&cBlood Opened&7 in &a"+formatNumber(bloodOpenTime)+"s")
     bloodOpened = true
 }).setCriteria("${msg}")
