@@ -22,7 +22,7 @@ The goofiest SkyBlock mod out there with features never seen before like:
 4. In Minecraft run the command */ct files*
 5. Open the modules directory
 6. Move the folder named "shaweelAddons" from the .zip archive you downloaded to the modules directory
-
+Video Tutorial: https://youtu.be/l_pyNJuHKDs
 
 
 
