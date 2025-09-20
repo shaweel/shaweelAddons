@@ -11,6 +11,18 @@ while (true) {
 translations = {zombie: []}
 translations.zombie = zombieTranslation.split(",")
 
+currentVersion = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/metadata.json")
+currentVersion = JSON.parse(currentVersion)
+currentVersion = currentVersion.version
+
+latestVersion = "1.0.0"
+request({
+    url: "https://raw.githubusercontent.com/shaweel/shaweelAddons/refs/heads/main/metadata.json",
+    json: true
+}).then(data => {
+    latestVersion = data.version
+})
+
 shitters = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/shitters.json")
 shitters = JSON.parse(shitters)
 
@@ -30,7 +42,14 @@ loaded = false
 register("tick", () => {
     if (loaded) return
     loaded = true
-    chatLog("&aModule loaded")
+    if (currentVersion != latestVersion) {
+        chatLog("&c&lWARNING: &r&cYou are currently using an outdated version of shaweelAddons!")
+        chatLog("Current Version: &c"+currentVersion)
+        chatLog("Latest Version: &a"+latestVersion)
+        chatLog("&cIt is highly advised to update!")
+        link = new TextComponent("&d[shaweelAddons] &lClick to update!").setClick("open_url", "https://github.com/shaweel/shaweelAddons/releases/latest")
+        ChatLib.chat(link)
+    }
 })
 function debugLog(message) {
     if (debugModeVariable == 1) {
