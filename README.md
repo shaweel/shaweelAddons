@@ -5,5 +5,13 @@ The goofiest SkyBlock mod out there with features never seen before like:
 - SS Reset Alert: Notifies you when someone says that ss reset in a dungeon
 - Low Health: Notifies you when you have low health
 - Class Milestone Reminder: Shows a title before you get milestone 3, useful for archers using rcm in clear
-- [NEW] Katana Hud: Shows whether the Enderman Slayer's katana weapon has it's ability activated.
+- Katana Hud: Shows whether the Enderman Slayer's katana weapon has it's ability activated
+- Katana Ability Expired Sound - Plays a sound whenever your Katana ability expires
+- Shitter List - You can add people to your shitter list, which will auto kick them with reason. /sha shitterlist
+- Blow Gate Alert - Alerts you whenever you need to blow the gate in F7 terminals based on what you did
+- Extra Life Items Alert - Alerts you whenever your Bonzo or Spirit mask pops, or whenever your Phoenix dies
+- Dungeon Chest Profit - Calculates profit in dungeon chests(cuz NEU eats fps for breakfast, lunch and dinner)
+- Splits - Dungeon splits with the most information out of any mod.
+- Mimic Killed - Alerts you whenever Mimic is killed in a Dungeon
+- Rat Kill Alert - Alerts you whenever you kill a hub Rat
 ![alt](https://i.imgur.com/HfWSFn3.png)
