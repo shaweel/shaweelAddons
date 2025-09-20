@@ -135,16 +135,16 @@ elements = [
     new Display()
 ]
 
-bossStart=["Gratz for making it this far, but I’m basically unbeatable.", "This is where the journey ends for you, Adventurers.", "I was burdened with terrible news recently...", "Welcome Adventurers! I am Thorn, the Spirit! And host of the Vegan Trials!", "Welcome, you arrive right on time. I am Livid, the Master of Shadows.", "So you made it all the way here... Now you wish to defy me? Sadan?!"]
-bossEnd=["Alright, maybe I'm just weak after all..", "Whatever...", "What?! My Guardian power is unbeatable!", "Whatttt? How did they win??", "Impossible! How did you figure out which one I was?!", "NOOOOOOOOO!!! THIS IS IMPOSSIBLE!!"]
+bossStart=["[BOSS] Bonzo: Gratz for making it this far, but I’m basically unbeatable.", "[BOSS] Scarf: This is where the journey ends for you, Adventurers.", "[BOSS] The Professor: I was burdened with terrible news recently...", "[BOSS] Thorn: Welcome Adventurers! I am Thorn, the Spirit! And host of the Vegan Trials!", "[BOSS] Livid: Welcome, you arrive right on time. I am Livid, the Master of Shadows.", "[BOSS] Sadan: So you made it all the way here... Now you wish to defy me? Sadan?!"]
+bossEnd=["[BOSS] Bonzo: Alright, maybe I'm just weak after all..", "[BOSS] Scarf: Whatever...", "[BOSS] The Professor: What?! My Guardian power is unbeatable!", "CROWD: Whatttt? How did they win??", "[BOSS] Livid: Impossible! How did you figure out which one I was?!", "[BOSS] Sadan: NOOOOOOOOO!!! THIS IS IMPOSSIBLE!!"]
 
 register("chat", (msg) => {
-    if (bossStart.includes(msg)) {
+    if (bossStart.includes(ChatLib.removeFormatting(msg))) {
         chatLog("&aEnter &7phase of dungeon completed in "+formatNumber(enterTime)+"s")
         debugLog("&bMaxor &7phase of dungeon started.")
         f7Split = "Maxor"
     }
-    if (bossEnd.includes(msg)) {
+    if (bossEnd.includes(ChatLib.removeFormatting(msg))) {
         chatLog("&bBoss &7phase of dungeon completed in "+formatNumber(enterTime)+"s")
         debugLog("&aDungeon Completed")
         f7Split = "Nothing"
@@ -885,9 +885,9 @@ register("chat", () => {
 }).setCriteria("[BOSS] Maxor: WELL! WELL! WELL! LOOK WHO'S HERE!")
 
 
-watcherOpen = ["Congratulations, you made it through the Entrance.", "Ah, you've finally arrived.", "Ah, we meet again...", "So you made it this far... interesting.", "You've managed to scratch and claw your way here, eh?", "I'm starting to get tired of seeing you around here...", "Oh.. hello?", "Things feel a little more roomy now, eh?"]
+watcherOpen = ["[BOSS] The Watcher: Congratulations, you made it through the Entrance.", "[BOSS] The Watcher: Ah, you've finally arrived.", "[BOSS] The Watcher: Ah, we meet again...", "[BOSS] The Watcher: So you made it this far... interesting.", "[BOSS] The Watcher: You've managed to scratch and claw your way here, eh?", "[BOSS] The Watcher: I'm starting to get tired of seeing you around here...", "[BOSS] The Watcher: Oh.. hello?", "[BOSS] The Watcher: Things feel a little more roomy now, eh?"]
 register("chat", (msg) => {
-    if (!watcherOpen.includes(msg)) return
+    if (!watcherOpen.includes(ChatLib.removeFormatting(msg))) return
     chatLog("&cBlood Opened&7 in &a"+formatNumber(bloodOpenTime)+"s")
     bloodOpened = true
 }).setCriteria("${msg}")
@@ -1064,7 +1064,7 @@ register("chat", () => {
 }).setCriteria("The gate has been destroyed!")
 
 register("tick", () => {
-    if (f7Split=="Nothing") {
+    if (!checkDungeon()) {
         bloodOpened=false
         bloodCleared=false
         bloodOpenTime=0.00
