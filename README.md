@@ -20,7 +20,7 @@ The goofiest SkyBlock mod out there with features never seen before like:
 2. Download the ![ChatTriggers](https://chattriggers.com/) mod for *Minecraft 1.8.9* if you don't have it already
 3. In Minecraft run the command */ct files*
 4. Open the modules directory
-5. Move the folder named "shaweelAddons" from the .zip archive you downloaded to here
+5. Move the folder named "shaweelAddons" from the .zip archive you downloaded to the modules directory
 
 
 
