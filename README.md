@@ -16,8 +16,8 @@ The goofiest SkyBlock mod out there with features never seen before like:
 - Rat Kill Alert - Alerts you whenever you kill a hub Rat
 ## Install
 - This should work on every operating system, tested on: Windows, MacOS, Linux(Arch Linux)
-1. Download the ![latest release](https://github.com/shaweel/shaweelAddons/releases)
-2. Download the ![ChatTriggers](https://chattriggers.com/) mod for __Minecraft 1.8.9__ if you don't have it already
+1. Download the file called *shaweelAddons-x.x.x.zip*![latest release](https://github.com/shaweel/shaweelAddons/releases)
+2. Download the ![ChatTriggers](https://chattriggers.com/) mod for *Minecraft 1.8.9* if you don't have it already
 3. In Minecraft run the command */ct files*
 4. Open the modules directory
 5. Move the folder named "shaweelAddons" from the .zip archive you downloaded to here
