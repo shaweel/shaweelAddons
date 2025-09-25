@@ -4,11 +4,7 @@ import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty} from "Vigila
     getCategoryComparator: () => (a, b) => {
         const categories = ["General", "Dungeons", "Slayer", "Fishing"];
         return categories.indexOf(a.name) - categories.indexOf(b.name);
-    },
-    getSubcategoryComparator: () => (a, b) => {
-        const subcategories = ["GUI", "General", "Extra Life Items", "Low Health Alert", "Rats", "Floor 7"]
-        return subcategories.indexOf(a.getValue()[0].attributesExt.subcategory) - subcategories.indexOf(b.getValue()[0].attributesExt.subcategory)
-    },
+    }
 })
 
 class Settings {
@@ -35,6 +31,30 @@ class Settings {
         category: "General",
     })
     ratSound = false
+
+    @SwitchProperty({
+        name: "Purple Pad Alert",
+        description: "When enabled you will see a title when you need to enter purple pad, and when you need to exit purple pad.",
+        subcategory: "Floor 7",
+        category: "Dungeons",
+    })
+    padTitle = false
+
+    @SwitchProperty({
+        name: "Purple Pad Sound",
+        description: "When enabled a sound will play, when you need to enter purple pad, and when you need to exit purple pad.",
+        subcategory: "Floor 7",
+        category: "Dungeons",
+    })
+    padSound = false
+
+    @SwitchProperty({
+        name: "Tank only",
+        description: "When enabled Purple Pad Alert and Sound will only work if you're playing tank.",
+        subcategory: "Floor 7",
+        category: "Dungeons",
+    })
+    padTank = false
     
     @SwitchProperty({
         name: "Alert blow gate",
@@ -184,7 +204,7 @@ class Settings {
         name: "Move GUIs",
         description: "You can also do /shaweeladdons gui",
         category: "General",
-        subcategory: "GUI",
+        subcategory: "",
         placeholder: "Move"
     })
     Action() {
@@ -198,6 +218,7 @@ class Settings {
         subcategory: "Enderman Slayer"
     })
     katanaHud = false
+    
     @SwitchProperty({
         name: "Katana Ability Expired Sound",
         description: "When enabled a sound will play whenever the Katana ability expires",
@@ -208,7 +229,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Show title on low health",
-        description: "When enabled you will see a title whenever you get below 50% hp",
+        description: "When enabled you will see a title whenever you get below 50 percent hp",
         subcategory: "Low Health Alert",
         category: "General",
     })
@@ -216,7 +237,7 @@ class Settings {
 
     @TextProperty({
         name: "Low health alert text",
-        description: "The text you will see whenever you get below 50% hp",
+        description: "The text you will see whenever you get below 50 percent hp",
         subcategory: "Low Health Alert",
         category: "General",
     })
@@ -224,7 +245,7 @@ class Settings {
 
     @SwitchProperty({
         name: "Play sound on low health",
-        description: "When enabled a sound, which you can change in the assets will play whenever you get below 50% hp",
+        description: "When enabled a sound, which you can change in the assets will play whenever you get below 50 percent hp",
         subcategory: "Low Health Alert",
         category: "General",
     })
