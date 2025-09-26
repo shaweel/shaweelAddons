@@ -37,7 +37,7 @@ register("step", () => {
         if (!bloodOpened) {
             bloodOpenTime += 0.01
         }
-        if (!bloodCleared && bloodOpenced) {
+        if (!bloodCleared && bloodOpened) {
             bloodClearTime += 0.01
         }
         if (bloodCleared && bloodOpened) {
@@ -214,25 +214,25 @@ register("chat", (msg) => {
     if (!watcherOpen.includes(msg)) {
         return
     }
-    utils.chatLog("&cBlood Opened&7 in &a"+utils.formatSmallNumber(bloodOpenTime)+"s")
+    utils.chatLog("&cBlood Opened&7 in &a"+utils.formatSmallNumber(bloodOpenTime, 2)+"s")
     bloodOpened = true
 }).setCriteria("${msg}")
 
 //Blood clear
 register("chat", () => {
-    utils.chatLog("&4Blood Cleared &7in &a"+utils.formatSmallNumber(bloodClearTime)+"s")
+    utils.chatLog("&4Blood Cleared &7in &a"+utils.formatSmallNumber(bloodClearTime, 2)+"s")
     bloodCleared = true
 }).setCriteria("[BOSS] The Watcher: You have proven yourself. You may pass.")
 
 //Non F7/M7 bosses start and end
 register("chat", (msg) => {
     if (bossStart.includes(ChatLib.removeFormatting(msg))) {
-        utils.chatLog("&aEnter &7phase of dungeon completed in "+utils.formatSmallNumber(enterTime)+"s")
+        utils.chatLog("&aEnter &7phase of dungeon completed in "+utils.formatSmallNumber(enterTime, 2)+"s")
         utils.debugLog("&bBoss &7phase of dungeon started.")
         currentSplit = "Maxor"
     }
     if (bossEnd.includes(ChatLib.removeFormatting(msg))) {
-        utils.chatLog("&bBoss &7phase of dungeon completed in "+utils.formatSmallNumber(enterTime)+"s")
+        utils.chatLog("&bBoss &7phase of dungeon completed in "+utils.formatSmallNumber(enterTime, 2)+"s")
         utils.debugLog("&aDungeon Completed")
         currentSplit = "Nothing"
     }
@@ -240,21 +240,21 @@ register("chat", (msg) => {
 
 //Maxor
 register("chat", () => {
-    utils.chatLog("&aEnter &7phase of dungeon completed in "+utils.formatSmallNumber(enterTime)+"s")
+    utils.chatLog("&aEnter &7phase of dungeon completed in "+utils.formatSmallNumber(enterTime, 2)+"s")
     utils.debugLog("&bMaxor &7phase of dungeon started.")
     currentSplit="Maxor"
 }).setCriteria("[BOSS] Maxor: WELL! WELL! WELL! LOOK WHO'S HERE!")
 
 //Storm
 register("chat", () => {
-    utils.chatLog("&bMaxor &7phase of dungeon completed in&a "+utils.formatSmallNumber(maxorTime)+"s")
+    utils.chatLog("&bMaxor &7phase of dungeon completed in&a "+utils.formatSmallNumber(maxorTime, 2)+"s")
     utils.debugLog("&dStorm &7phase of dungeon started.")
     currentSplit="Storm"
 }).setCriteria("[BOSS] Storm: Pathetic Maxor, just like expected.")
 
 //Terminal Section 1
 register("chat", () => {
-    utils.chatLog("&dStorm &7phase of dungeon completed in&a "+utils.formatSmallNumber(stormTime)+"s")
+    utils.chatLog("&dStorm &7phase of dungeon completed in&a "+utils.formatSmallNumber(stormTime, 2)+"s")
     utils.debugLog("&6Terminal Section 1 &7started.")
     currentSplit="Term1"
 }).setCriteria("[BOSS] Goldor: Who dares trespass into my domain?")
@@ -267,7 +267,7 @@ register("tick", () => {
             gateDestroyed = false
         }, 100)
         currentSplit = "Term2"
-        utils.chatLog("&6Terminal Section 1 &7completed in&a "+utils.formatSmallNumber(term1Time)+"s")
+        utils.chatLog("&6Terminal Section 1 &7completed in&a "+utils.formatSmallNumber(term1Time, 2)+"s")
         utils.debugLog("&6Terminal Section 2 &7started.")
     //Terminal section 3
     } else if (currentSplit == "Term2" && gateDestroyed && allTermsDone) {
@@ -276,7 +276,7 @@ register("tick", () => {
             gateDestroyed = false
         }, 100)
         currentSplit = "Term3"
-        utils.chatLog("&6Terminal Section 2 &7completed in&a "+utils.formatSmallNumber(term2Time)+"s")
+        utils.chatLog("&6Terminal Section 2 &7completed in&a "+utils.formatSmallNumber(term2Time, 2)+"s")
         utils.debugLog("&6Terminal Section 3 &7started.")
     //Terminal section 4
     } else if (currentSplit == "Term3" && gateDestroyed && allTermsDone) {
@@ -285,14 +285,14 @@ register("tick", () => {
             gateDestroyed = false
         }, 100)
         currentSplit = "Term4"
-        utils.chatLog("&6Terminal Section 3 &7completed in&a "+utils.formatSmallNumber(term3Time)+"s")
+        utils.chatLog("&6Terminal Section 3 &7completed in&a "+utils.formatSmallNumber(term3Time, 2)+"s")
         utils.debugLog("&6Terminal Section 4 &7started.")
     //Goldor
     } else if (currentSplit == "Term4" && allTermsDone) {
         allTermsDone = false
         currentSplit = "Goldor"
-        utils.chatLog("&6Terminal Section 4 &7completed in&a "+utils.formatSmallNumber(term4Time)+"s")
-        utils.chatLog("&6Terminals &7completed in &a"+utils.formatSmallNumber(term1Time+term2Time+term3Time+term4Time)+"s")
+        utils.chatLog("&6Terminal Section 4 &7completed in&a "+utils.formatSmallNumber(term4Time, 2)+"s")
+        utils.chatLog("&6Terminals &7completed in &a"+utils.formatSmallNumber(term1Time+term2Time+term3Time+term4Time, 2)+"s")
         utils.debugLog("&eGoldor &7phase of dungeon started.")
     }
 })
@@ -300,14 +300,14 @@ register("tick", () => {
 //Necron
 register("chat", (msg) => {
     if (!necronStart.includes(ChatLib.removeFormatting(msg))) return
-    utils.chatLog("&aGoldor &7phase of dungeon completed in "+utils.formatSmallNumber(goldorTime)+"s")
-    utils.debugLog("&aNecron &7phase of dungeon started.")
+    utils.chatLog("&eGoldor &7phase of dungeon completed in "+utils.formatSmallNumber(goldorTime, 2)+"s")
+    utils.debugLog("&cNecron &7phase of dungeon started.")
     currentSplit="Necron"
 }).setCriteria("${msg}")
 
 //Dragons/Necron end
 register("chat", () => {
-    utils.chatLog("&cNecron &7phase of dungeon completed in "+utils.formatSmallNumber(necronTime)+"s")
+    utils.chatLog("&cNecron &7phase of dungeon completed in "+utils.formatSmallNumber(necronTime, 2)+"s")
     
     if (utils.getDungeonFloor() == 7) {
         currentSplit = "Nothing"
@@ -323,7 +323,7 @@ register("chat", (msg) => {
     if (!msg.endsWith("Incredible. You did what I couldn't do myself.")) return
     if (!msg.startsWith("[BOSS]")) return
     currentSplit = "Nothing"
-    utils.chatLog("&5Dragons &7phase of dungeon completed in "+utils.formatSmallNumber(dragonsTime)+"s")
+    utils.chatLog("&5Dragons &7phase of dungeon completed in "+utils.formatSmallNumber(dragonsTime, 2)+"s")
     utils.debugLog("&aDungeon completed")
 }).setCriteria("${msg}")
 
