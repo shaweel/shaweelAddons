@@ -1,4 +1,4 @@
-import { currentSplit } from "./Splits"
+import { currentSplit } from "./Splits.js"
 import Settings from "../config.js"
 import utils from "../utils.js"
 
