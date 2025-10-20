@@ -14,6 +14,8 @@ The goofiest SkyBlock mod out there with features never seen before like:
 - Splits - Dungeon splits with the most information out of any mod.
 - Mimic Killed - Alerts you whenever Mimic is killed in a Dungeon
 - Rat Kill Alert - Alerts you whenever you kill a hub Rat
+- Leap overlay - A leap overlay with keybinds
+- Wish alert - Tells you when to wish in dungeons
 ## Install
 - This should work on every operating system, tested on: Windows, MacOS, Linux(Arch Linux)
 1. Download the file called *shaweelAddons-x.x.x.zip* from the ![latest release](https://github.com/shaweel/shaweelAddons/releases/latest)
