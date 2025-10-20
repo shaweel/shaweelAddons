@@ -1,9 +1,9 @@
-import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty} from "Vigilance"
+import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @NumberProperty} from "Vigilance"
 
 @Vigilant("shaweelAddons", "shaweelAddons", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["General", "Dungeons", "Slayer", "Fishing"];
-        return categories.indexOf(a.name) - categories.indexOf(b.name);
+        const categories = ["General", "Dungeons", "Slayer", "Fishing"]
+        return categories.indexOf(a.name) - categories.indexOf(b.name)
     }
 })
 
@@ -168,6 +168,80 @@ class Settings {
     })
     mimicAnnounce = false
 
+    @SwitchProperty({
+        name: "Leap Overlay",
+        description: "A better gui for leaping",
+        subcategory: "Leaping",
+        category: "Dungeons",
+    })
+    leapOverlay = false
+
+    @SwitchProperty({
+        name: "Leap Announce",
+        description: "Announces who you leaped to in chat",
+        subcategory: "Leaping",
+        category: "Dungeons",
+    })
+    leapAnnounce = false
+
+    @SwitchProperty({
+        name: "Leap Keybinds",
+        description: "Adds keybinds to the leap overlay",
+        subcategory: "Leaping",
+        category: "Dungeons",
+    })
+    leapKeybinds = false
+
+    @NumberProperty({
+        name: "Mage Keybind",
+        description: "The keybind to leap to mage",
+        subcategory: "Leaping",
+        category: "Dungeons",
+        min: 1,
+        max: 5
+    })
+    mageKeybind = Number(1)
+
+    @NumberProperty({
+        name: "Archer Keybind",
+        description: "The keybind to leap to archer",
+        subcategory: "Leaping",
+        category: "Dungeons",
+        min: 1,
+        max: 5
+    })
+    archerKeybind = Number(2)
+
+    @NumberProperty({
+        name: "Healer Keybind",
+        description: "The keybind to leap to healer",
+        subcategory: "Leaping",
+        category: "Dungeons",
+        min: 1,
+        max: 5
+    })
+    healerKeybind = Number(3)
+
+    @NumberProperty({
+        name: "Tank Keybind",
+        description: "The keybind to leap to tank",
+        subcategory: "Leaping",
+        category: "Dungeons",
+        min: 1,
+        max: 5
+    })
+    tankKeybind = Number(4)
+
+    @NumberProperty({
+        name: "Berserk Keybind",
+        description: "The keybind to leap to berserk",
+        subcategory: "Leaping",
+        category: "Dungeons",
+        min: 1,
+        max: 5
+    })
+    berserkKeybind = Number(5)
+
     @TextProperty({
         name: "Mimic kill announcement",
         description: "The text you will send in chat whenever mimic is killed",
@@ -259,6 +333,70 @@ class Settings {
     })
     cmtitle = false
 
+    @SwitchProperty({
+        name: "Wished",
+        description: "Shows a title when you wish.",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    wishedTitle = false 
+    @TextProperty({
+        name: "Wished Text",
+        description: "The text that shows when you wish.",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    wishedText = "&aWished" 
+    @SwitchProperty({
+        name: "Wished Sound",
+        description: "Plays a sound when you wish.",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    wishedSound = false 
+
+    @SwitchProperty({
+        name: "Wish Alert",
+        description: "Shows a title when you're supposed to wish.",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    wishTitle = false 
+    @TextProperty({
+        name: "Wish Text",
+        description: "The text that shows when you're supposed to wish.",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    wishText = "&4Wish!" 
+    @SwitchProperty({
+        name: "Wish Sound",
+        description: "Plays a sound when you should wish.",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    wishSound = false 
+    @SwitchProperty({
+        name: "Crystal Alert",
+        description: "Shows a title when you pick up a crystal in Maxor",
+        category: "Dungeons",
+        subcategory: "Floor 7"
+    })
+    crystalTitle = false 
+    @TextProperty({
+        name: "Crystal Text",
+        description: "The text that shows when you pick up a crystal in Maxor",
+        category: "Dungeons",
+        subcategory: "Floor 7"
+    })
+    crystalText = "&dCrystal Picked Up!" 
+    @SwitchProperty({
+        name: "Crystal Sound",
+        description: "Plays a sound when you pick up a crystal in Maxor",
+        category: "Dungeons",
+        subcategory: "Floor 7"
+    })
+    crystalSound = false 
     @TextProperty({
         name: "Milestone below 3 alert text",
         description: "The text you will see when you're below class milestone 3",
@@ -344,6 +482,16 @@ class Settings {
         this.addDependency("Mimic kill text", "Show title on mimic kill")
         this.addDependency("Mimic kill announcement", "Announce mimic killed in chat")
         this.addDependency("Katana Ability Expired Sound", "Katana HUD")
+        this.addDependency("Wished Text", "Wished")
+        this.addDependency("Wish Text", "Wish Alert")
+        this.addDependency("Crystal Text", "Crystal Alert")
+        this.addDependency("Leap Announce", "Leap Overlay")
+        this.addDependency("Leap Keybinds", "Leap Overlay")
+        this.addDependency("Mage Keybind", "Leap Keybinds")
+        this.addDependency("Archer Keybind", "Leap Keybinds")
+        this.addDependency("Healer Keybind", "Leap Keybinds")
+        this.addDependency("Tank Keybind", "Leap Keybinds")
+        this.addDependency("Berserk Keybind", "Leap Keybinds")
     }
 }
 
