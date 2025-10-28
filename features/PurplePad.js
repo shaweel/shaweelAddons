@@ -3,6 +3,7 @@ import utils from "../utils.js"
 
 let padding = false
 let padTimer = 0
+let cd = false
 
 const ENTER_PAD = 3.5
 const EXIT_PAD = 4.6
@@ -37,12 +38,12 @@ register("packetReceived", () => {  //Every server side tick
 register("chat", () => {
     //Return if pad related settings are disabled
     if (!Settings.padTitle && !Settings.padSound) return
-    
-    //Don't pad if you aren't tank and tank only is enabled
-    if (Settings.padTank) {
-        if (utils.getDungeonClass() != "Tank") {
-            return
-        }
-    }
+    if (cd) return
+    utils.debugLog(utils.getDungeonClass())
+    if (Settings.padTank && utils.getDungeonClass() !== "Tank") return
     padding = true
+    cd = true
+    setTimeout(() => {
+        cd = false
+    }, 5000);
 }).setCriteria("Storm's Giga Lightning hit you for ${dmg} true damage.")
