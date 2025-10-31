@@ -32,6 +32,10 @@ class utils {
         }
     }
 
+    pseudoDebugLog(debugMessage) {
+        ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &7"+debugMessage)
+    }
+
     chatLog(chatMessage) {
         ChatLib.chat("&d[shaweelAddons] &7"+chatMessage)
     }
@@ -180,6 +184,7 @@ class utils {
         if (assignIndex == 0) return "katanaHud"
         if (assignIndex == 1) return "Splits"
         if (assignIndex == 2) return "chestProfit"
+        if (assignIndex == 3) return "tick"
         console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(assignElementName)("+assignIndex+")")
     }
     
@@ -187,6 +192,7 @@ class utils {
         if (name == "katanaHud") return 0
         if (name == "Splits") return 1
         if (name == "chestProfit") return 2
+        if (name == "tick") return 3
         console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(getIndexFromName)("+name+")")
     }
 
