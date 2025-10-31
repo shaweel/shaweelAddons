@@ -161,14 +161,6 @@ class Settings {
     forceRat = false
 
     @SwitchProperty({
-        name: "Announce mimic killed in chat",
-        description: "When enabled you will send a chat message whenever mimic is killed",
-        subcategory: "General",
-        category: "Dungeons",
-    })
-    mimicAnnounce = false
-
-    @SwitchProperty({
         name: "Leap Overlay",
         description: "A better gui for leaping",
         subcategory: "Leaping",
@@ -241,6 +233,14 @@ class Settings {
         max: 5
     })
     berserkKeybind = Number(5)
+    
+    @SwitchProperty({
+        name: "Announce mimic killed in chat",
+        description: "When enabled you will send a chat message whenever mimic is killed",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    mimicAnnounce = false
 
     @TextProperty({
         name: "Mimic kill announcement",
@@ -273,6 +273,46 @@ class Settings {
         category: "Dungeons",
     })
     mimicSound = false
+
+    @SwitchProperty({
+        name: "Announce prince killed in chat",
+        description: "When enabled you will send a chat message whenever prince is killed",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    princeAnnounce = false
+
+    @TextProperty({
+        name: "Prince kill announcement",
+        description: "The text you will send in chat whenever prince is killed",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    princeAnnounceText = "Prince Killed!"
+
+    @SwitchProperty({
+        name: "Show title on prince kill",
+        description: "When enabled you will see a title whenever prince is killed",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    princeTitle = false
+
+    @TextProperty({
+        name: "Prince kill text",
+        description: "The text you will see whenever prince is killed",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    princeText = "&aPrince Killed!"
+
+    @SwitchProperty({
+        name: "Play sound on prince kill",
+        description: "When enabled a sound, which you can change in the assets will play whenever prince is killed",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    princeSound = false
 
     @ButtonProperty({
         name: "Move GUIs",
@@ -332,6 +372,14 @@ class Settings {
         subcategory: "General"
     })
     cmtitle = false
+
+    @SwitchProperty({
+        name: "Outside dungeon death tick timer",
+        description: "A timer for death ticks when you leave the dungeon environment",
+        category: "Dungeons",
+        subcategory: "General"
+    })
+    tick = false
 
     @SwitchProperty({
         name: "Wished",
@@ -481,6 +529,8 @@ class Settings {
         this.addDependency("Phoenix text", "Alert Phoenix")
         this.addDependency("Mimic kill text", "Show title on mimic kill")
         this.addDependency("Mimic kill announcement", "Announce mimic killed in chat")
+        this.addDependency("Prince kill text", "Show title on prince kill")
+        this.addDependency("Prince kill announcement", "Announce prince killed in chat")
         this.addDependency("Katana Ability Expired Sound", "Katana HUD")
         this.addDependency("Wished Text", "Wished")
         this.addDependency("Wish Text", "Wish Alert")
