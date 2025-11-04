@@ -2,11 +2,13 @@ let debugMode = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/debugM
 debugMode = Number(debugMode)
 
 //Define translations
-let zombieTranslation = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/translations/zombie.txt")
-zombieTranslation = zombieTranslation.replaceAll(" ", "")
-
-let translations = {zombie: []}
-translations.zombie = zombieTranslation.split(",")
+let translationsFolder = new java.io.File("./config/ChatTriggers/modules/shaweelAddons/translations")
+translationsFolder = translationsFolder.listFiles()
+let translations = {}
+for (translation of translationsFolder) {
+    const name = String(translation.getName())
+    translations[name.replaceAll(".txt", "")] = FileLib.read("shaweelAddons", "translations/"+name).replaceAll(" ", "").split(",")
+}
 
 //Cache
 let cachedDungeonClass = null
@@ -184,7 +186,6 @@ class utils {
         if (assignIndex == 0) return "katanaHud"
         if (assignIndex == 1) return "Splits"
         if (assignIndex == 2) return "chestProfit"
-        if (assignIndex == 3) return "tick"
         console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(assignElementName)("+assignIndex+")")
     }
     
@@ -192,7 +193,6 @@ class utils {
         if (name == "katanaHud") return 0
         if (name == "Splits") return 1
         if (name == "chestProfit") return 2
-        if (name == "tick") return 3
         console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(getIndexFromName)("+name+")")
     }
 
