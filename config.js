@@ -1,8 +1,8 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @NumberProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.3", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["General", "Dungeons", "Slayer", "Fishing"]
+        const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
         return categories.indexOf(a.name) - categories.indexOf(b.name)
     }
 })
@@ -12,7 +12,7 @@ class Settings {
         name: "Show title on rat kill",
         description: "When enabled you will see a title whenever you kill a rat",
         subcategory: "Rats",
-        category: "General",
+        category: "Miscellaneous"
     })
     ratTitle = false
 
@@ -20,7 +20,7 @@ class Settings {
         name: "Rat kill text",
         description: "The text you will see whenever you kill a rat",
         subcategory: "Rats",
-        category: "General",
+        category: "Miscellaneous"
     })
     ratText = "&aRat Killed!"
 
@@ -28,7 +28,7 @@ class Settings {
         name: "Play sound on rat kill",
         description: "When enabled a sound, which you can change in the assets will play whenever you kill a rat",
         subcategory: "Rats",
-        category: "General",
+        category: "Miscellaneous"
     })
     ratSound = false
 
@@ -156,9 +156,17 @@ class Settings {
         name: "Force yourself on rat kill",
         description: "Usually rat kill doesn't trigger if you're not close to it(15 blocks - X, Z and 5 blocks Y), when this is enabled it will trigger no matter how far you are, this could be helpful if you're sniping them from a long distance, but could also hurt you by triggering when someone else kills it, while you're minding your own bussiness.",
         subcategory: "Rats",
-        category: "General",
+        category: "Miscellaneous",
     })
     forceRat = false
+
+    @SwitchProperty({
+        name: "Chat Commands",
+        description: "Party chat commands, for example !warp for warping !pt for party transfer etc.",
+        subcategory: "General",
+        category: "Miscellaneous",
+    })
+    chatCommands = false
 
     @SwitchProperty({
         name: "Leap Overlay",
@@ -372,14 +380,6 @@ class Settings {
         subcategory: "General"
     })
     cmtitle = false
-
-    @SwitchProperty({
-        name: "Outside dungeon death tick timer",
-        description: "A timer for death ticks when you leave the dungeon environment",
-        category: "Dungeons",
-        subcategory: "General"
-    })
-    tick = false
 
     @SwitchProperty({
         name: "Wished",
