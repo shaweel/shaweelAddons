@@ -51,7 +51,7 @@ function inChest() {
 }
 
 function inChestMenu() {
-    if (Player.getContainer().getName().includes("The Catacombs")) {
+    if (Player.getContainer().getName().includes("Catacombs")) {
         return true
     }
     return false
@@ -111,7 +111,8 @@ function getProfitFromLore(lore) {
     let items = []
     let chestcost = NaN
     for (let line of lore) {
-        if (line.includes("Coins") || line.includes("FREE")) chestcost = line 
+        index++
+        if ((line.includes("Coins") || line.includes("FREE")) && !line.includes("NOTE")) chestcost = line
     }
     chestcost = ChatLib.removeFormatting(chestcost)
     if (chestcost.includes("FREE")) {
@@ -121,10 +122,9 @@ function getProfitFromLore(lore) {
     
         while (chestcost.includes(",")) {
             chestcost = chestcost.replace(",", "")
-        }    
+        }
         chestcost = Number(chestcost)
     }
-
     let index = -1
     for (let line of lore) {
         index++
@@ -140,7 +140,21 @@ function getProfitFromLore(lore) {
         itemProfit = getProfit(item)
         profit += itemProfit
     }
+    if (isNaN(chestcost)) chestcost = 0
     profit -= chestcost
+
+    for (let line of lore) {
+        index++
+        if (!line.includes("Dungeon Chest Key")) continue
+        profit -= bz.DUNGEON_CHEST_KEY.quick_status.buyPrice
+        break
+    }
+
+    for (let line of lore) {
+        index++
+        if (!line.includes("Already opened!")) continue
+        return NaN
+    }
     profit = Math.floor(profit)
     return profit
 }
@@ -544,25 +558,41 @@ register("tick", () => {
         }
         let index = 0
         let totalprofit = 0
-        let chestcost = Player.getContainer().getStackInSlot(31)
-        if (chestcost != null) {
-            chestcost = chestcost.getLore()[7]
-            chestcost = ChatLib.removeFormatting(chestcost)
-            if (chestcost.includes("FREE")) {
-                chestcost = 0
-            } else {
-                chestcost = chestcost.split(" Coins")[0]
-            
-                while (chestcost.includes(",")) {
-                    chestcost = chestcost.replace(",", "")
-                }    
-                chestcost = Number(chestcost)
-            }
-        } else {
-            chestcost = 0
+        let lore = Player.getContainer().getStackInSlot(31)
+        if (lore === null) {
+            return
         }
+        lore = lore.getLore()
+        let chestcost = NaN
+        for (let line of lore) {
+            index++
+            if ((line.includes("Coins") || line.includes("FREE")) && !line.includes("NOTE")) chestcost = line
+        }
+        chestcost = ChatLib.removeFormatting(chestcost)
+        if (chestcost.includes("FREE")) {
+            chestcost = 0
+        } else {
+            chestcost = chestcost.split(" Coins")[0]
+        
+            while (chestcost.includes(",")) {
+                chestcost = chestcost.replace(",", "")
+            }
+            chestcost = Number(chestcost)
+        }
+        if (isNaN(chestcost)) chestcost = 0
+        try {
+            let lore = Player.getContainer().getStackInSlot(31).getLore()
+            let keyIndex = -1
+            for (let line of lore) {
+                keyIndex++
+                if (!line.includes("Dungeon Chest Key")) continue
+                chestcost += bz.DUNGEON_CHEST_KEY.quick_status.buyPrice
+                break
+            }
+        } catch (error) {}
+        let lootIndex = -1
         for (let item of loot) {
-            index += 1
+            lootIndex += 1
             let name = item.getName()
             if (name.includes("Enchanted Book")) {
                 name = item.getLore()[1]
@@ -570,35 +600,43 @@ register("tick", () => {
             let profit = getProfit(name)
             profit = Math.floor(profit)
             if (profit > 0) {
-                setLine(2, index, name+"&7 - &a+"+utils.formatLargeNumber(profit))
+                setLine(2, lootIndex, name+"&7 - &a+"+utils.formatLargeNumber(profit))
             } else if (profit == 0) {
-                setLine(2, index, name+"&7 - &e0")
+                setLine(2, lootIndex, name+"&7 - &e0")
             } else {
-                setLine(2, index, name+"&7 - &c"+utils.formatLargeNumber(profit))
+                setLine(2, lootIndex, name+"&7 - &c"+utils.formatLargeNumber(profit))
             }
             if (profit == NaN) return
             totalprofit += profit
         }
         totalprofit -= chestcost
         chestcost = Math.floor(chestcost)
-        setLine(2, index+2, "&7Chest Cost - &c-"+utils.formatLargeNumber(chestcost))
+        setLine(2, lootIndex+2, "&7Chest Cost - &c-"+utils.formatLargeNumber(chestcost))
         if (chestcost == 0) {
-            setLine(2, index+2, "&7Chest Cost - &aFREE")
+            setLine(2, lootIndex+2, "&7Chest Cost - &aFREE")
         }
         totalprofit = Math.floor(totalprofit)
         formatted = utils.formatLargeNumber(totalprofit)
+        let currentlore = Player.getContainer().getStackInSlot(31).getLore()
+        let openedIndex = -1
+        for (let line of currentlore) {
+            openedIndex++
+            if (!line.includes("Already opened!")) continue
+            formatted = "&aAlready opened!"
+            totalprofit = -999999999999
+        }
         if (totalprofit > 0) {
-            setLine(2, index+3, "&7Total Profit - &a+"+formatted)
+            setLine(2, lootIndex+3, "&7Total Profit - &a+"+formatted)
         } else if (totalprofit == 0) {
-            setLine(2, index+3, "&7Total Profit - &e0")
+            setLine(2, lootIndex+3, "&7Total Profit - &e0")
         } else {
-            setLine(2, index+3, "&7Total Profit -&c "+formatted)
+            setLine(2, lootIndex+3, "&7Total Profit -&c "+formatted)
         }
         return
     }
     if (inChestMenu()) {
         let chests = getChests()
-        let chestsAndProfits = {"Wood Chest": 0, "Gold Chest": 0, "Diamond Chest": 0, "Emerald Chest": 0, "Obsidian Chest": 0, "Bedrock Chest": 0}
+        let chestsAndProfits = {"Wood": -999999999999, "Gold": -999999999999, "Diamond": -999999999999, "Emerald": -999999999999, "Obsidian": -999999999999, "Bedrock": -999999999999}
         let index = -1
         for (let chest of chests) {
             index += 1
@@ -610,6 +648,11 @@ register("tick", () => {
             let profit = getProfitFromLore(chest.getLore())
             let chestName = chest.getName()
             let formatted = utils.formatLargeNumber(profit)
+            if (isNaN(profit)) {
+                formatted = "&aAlready opened"
+                profit = -999999999999
+                chestsAndProfits[chestName] = -999999999999
+            }
             if (profit > 0) {
                 setLine(2, index, chestName+"&7 - &a+"+formatted)
             } else if (profit == 0) {
@@ -619,12 +662,12 @@ register("tick", () => {
             }
             chestName = ChatLib.removeFormatting(chestName)
             chestsAndProfits[chestName] = profit
-    
         }
         let best = Object.entries(chestsAndProfits).reduce((a, b) => a[1] > b[1] ? a : b)[0]
         
         for (let chest of chests) {
             let chestName = chest.getName()
+            utils.debugLog(best)
             if (!chestName.includes(best)) continue
             if (chestName.includes("[BEST]")) return
             chest.setName(chestName+" &a[BEST]")
@@ -636,7 +679,7 @@ register("tick", () => {
 
 register("renderSlot", slot => {
     if (!Settings.chestProfit) return
-    if (!slot.getInventory().getName().includes("The Catacombs")) return
+    if (!slot.getInventory().getName().includes("Catacombs")) return
     found = false
     citem = slot.getItem()
     if (!citem) return
