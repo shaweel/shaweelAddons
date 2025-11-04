@@ -1,7 +1,7 @@
 import utils from "../utils.js"
 import Settings from "../config.js"
 
-let lines = [[], [], []]
+let lines = [[], [], [], []]
 let shouldRender = [false, false, false]
 let positions = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/positions.json")
 positions = JSON.parse(positions)
@@ -29,7 +29,7 @@ sizeAndPos.getLine(0).setScale(1)
 elements = [
     new Display(),
     new Display(),
-    new Display()
+    new Display(),
 ]
 
 elements[0].setAlign(positions.katanaHud.align)
