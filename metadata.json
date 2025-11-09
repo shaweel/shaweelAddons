@@ -1,7 +1,0 @@
-{
-  "name": "shaweelAddons",
-  "creator": "shaweel",
-  "entry": "index.js",
-  "version": "1.3.3patch1",
-  "requires": ["Vigilance", "requestV2"]
-}
