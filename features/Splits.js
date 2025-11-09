@@ -5,6 +5,7 @@ import { editGui, elements, positions, removeLine, setLine, setShouldRender } fr
 //Define needed variables
 let bloodOpened = false
 let bloodCleared = false
+let enterDone = false
 let currentSplit="Nothing"
 let timers = {
     bloodOpen:0,
@@ -41,7 +42,7 @@ register("step", () => {
     }
 
     //Increment the timers
-    if (currentSplit == "Enter") {
+    if (currentSplit === "Enter") {
         if (!bloodOpened) {
             timers.bloodOpen += 0.01
         }
@@ -85,6 +86,7 @@ register("step", () => {
         currentSplit = "Nothing"
         utils.debugLog("Not in dungeon")
         bloodOpened=false
+        enterDone = false
         bloodCleared=false
         for (timer of Object.keys(timers)) {
             timers[timer] = 0
@@ -102,7 +104,7 @@ register("step", () => {
     }
     if (sbMenu == null) return
     if (sbMenu.getName().includes("Magical Map")) {
-        if (currentSplit == "Nothing") {
+        if (currentSplit == "Nothing" && !enterDone) {
             currentSplit = "Enter"
             utils.debugLog("&aEnter &7phase of dungeon started.")
             utils.debugLog("You are in Floor "+utils.getDungeonFloor())
@@ -198,6 +200,7 @@ register("chat", (msg) => {
     if (bossStart.includes(ChatLib.removeFormatting(msg))) {
         utils.chatLog("&aEnter &7phase of dungeon completed in "+utils.formatSmallNumber(timers.enter, 2)+"s")
         utils.debugLog("&bBoss &7phase of dungeon started.")
+        enterDone = true
         currentSplit = "Maxor"
     }
     if (ChatLib.removeFormatting(msg).includes("Livid: Impossible! How did you figure out which one I was?!")) {
@@ -216,7 +219,13 @@ register("chat", (msg) => {
 register("chat", () => {
     utils.chatLog("&aEnter &7phase of dungeon completed in "+utils.formatSmallNumber(timers.enter, 2)+"s")
     utils.debugLog("&bMaxor &7phase of dungeon started.")
+    enterDone = true
     currentSplit="Maxor"
+    if (utils.getDungeonClass() !== "Archer") return
+    if (utils.getDungeonFloor() !== 7) return
+    if (!Settings.cmtitle) return
+    Client.showTitle("&4&lGET MILESTONE 3", "", "0", "144000", "0")
+    utils.playSound("random.anvil_land", 1, 1)
 }).setCriteria("[BOSS] Maxor: WELL! WELL! WELL! LOOK WHO'S HERE!")
 
 //Storm
@@ -309,6 +318,7 @@ register("chat", () => {
     for (timer of Object.keys(timers)) {
         timers[timer] = 0
     }
+    enterDone = false
     return
 }).setCriteria("Starting in 4 seconds.")
 
