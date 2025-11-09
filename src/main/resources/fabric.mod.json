@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "shaweeladdons",
+	"version": "${version}",
+	"name": "shaweelAddons",
+	"description": "The goofiest skyblock mod out there!",
+	"authors": [
+		"shaweel"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/shaweeladdons/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			{
+				"value": "me.shaweel.shaweeladdons.ShaweelAddons",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"shaweeladdons.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.10",
+		"java": ">=21",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
