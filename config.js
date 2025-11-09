@@ -374,8 +374,8 @@ class Settings {
     lhsound = false
 
     @SwitchProperty({
-        name: "Show title when under class milestone 3",
-        description: "When enabled you will see a title when you're below class milestone 3, useful for playing archer and clearing with a Hyperion",
+        name: "Alert get class milestone",
+        description: "When enabled you will be alerted to get class milestone 3 in maxor if you're playing on archer in f7",
         category: "Dungeons",
         subcategory: "General"
     })
@@ -445,13 +445,6 @@ class Settings {
         subcategory: "Floor 7"
     })
     crystalSound = false 
-    @TextProperty({
-        name: "Milestone below 3 alert text",
-        description: "The text you will see when you're below class milestone 3",
-        category: "Dungeons",
-        subcategory: "General"
-    })
-    cmtext = "&4&lUnder class milestone 3!"
 
     @SwitchProperty({
         name: "Show title on SS Reset",
