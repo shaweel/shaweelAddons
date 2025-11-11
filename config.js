@@ -1,6 +1,6 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @NumberProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.3", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.5", {
     getCategoryComparator: () => (a, b) => {
         const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
         return categories.indexOf(a.name) - categories.indexOf(b.name)
@@ -513,7 +513,6 @@ class Settings {
         this.initialize(this)
         this.addDependency("Sea creature alert text", "Show title on sea creature catch")
         this.addDependency("SS Reset alert text", "Show title on SS Reset")
-        this.addDependency("Milestone below 3 alert text", "Show title when under class milestone 3")
         this.addDependency("Low health alert text", "Show title on low health")
         this.addDependency("Rat kill text", "Show title on rat kill")
         this.addDependency("Blow gate text", "Alert blow gate")
