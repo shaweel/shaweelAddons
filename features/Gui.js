@@ -30,6 +30,7 @@ elements = [
     new Display(),
     new Display(),
     new Display(),
+    new Display()
 ]
 
 elements[0].setAlign(positions.katanaHud.align)
@@ -347,6 +348,9 @@ function startMovingGui() {
     elements[2].setLine(3, "&6Necron's Handle &7 - &a+1,234,567")
     elements[2].getLine(3).setScale(positions.chestProfit.scale)
     elements[2].getLine(3).setShadow(true)
+    elements[3].setLine(0, "&6Tick: &f1.25s")
+    elements[3].getLine(0).setScale(positions.tick.scale)
+    elements[3].getLine(0).setShadow(true)
     for (let element of elements) {
         index += 1
         //Don't show if the feature is disabled
