@@ -1,6 +1,6 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @NumberProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.5", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.6", {
     getCategoryComparator: () => (a, b) => {
         const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
         return categories.indexOf(a.name) - categories.indexOf(b.name)
@@ -47,6 +47,30 @@ class Settings {
         category: "Dungeons",
     })
     padSound = false
+
+    @SwitchProperty({
+        name: "Tick timers",
+        description: "Tick timer for dungeons",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    tick = false
+
+    @SwitchProperty({
+        name: "Secret tick timer",
+        description: "Secret tick timer for when bats items and wither essences spawn",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    secretTick = false
+
+    @SwitchProperty({
+        name: "Outbounds tick timer",
+        description: "Tick timer for before the dungeon starts",
+        subcategory: "General",
+        category: "Dungeons",
+    })
+    outTick = false
 
     @SwitchProperty({
         name: "Tank only",
@@ -534,6 +558,8 @@ class Settings {
         this.addDependency("Healer Keybind", "Leap Keybinds")
         this.addDependency("Tank Keybind", "Leap Keybinds")
         this.addDependency("Berserk Keybind", "Leap Keybinds")
+        this.addDependency("Outbounds tick timer", "Tick timers")
+        this.addDependency("Secret tick timer", "Tick timers")
     }
 }
 
