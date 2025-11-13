@@ -15,6 +15,7 @@ register("packetReceived", (p) => {
         } else {
             if (getCurrentSplit() == "Nothing") {
                 timer = 2
+                if (!Settings.outTick) return
                 utils.playSound("note.pling", 1, 2)
             } else {
                 timer = 1
