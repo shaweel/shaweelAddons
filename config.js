@@ -51,15 +51,31 @@ class Settings {
     @SwitchProperty({
         name: "Tick timers",
         description: "Tick timer for dungeons",
-        subcategory: "General",
+        subcategory: "Tick Timers",
         category: "Dungeons",
     })
     tick = false
 
     @SwitchProperty({
+        name: "Use ticks",
+        description: "Uses ticks instead of seconds in the tick timers",
+        subcategory: "Tick Timers",
+        category: "Dungeons",
+    })
+    useTicks = false
+
+    @SwitchProperty({
+        name: "Remove label",
+        description: "Removes the label saying which tick timer it is",
+        subcategory: "Tick Timers",
+        category: "Dungeons",
+    })
+    removeLabel = false
+    
+    @SwitchProperty({
         name: "Secret tick timer",
         description: "Secret tick timer for when bats items and wither essences spawn",
-        subcategory: "General",
+        subcategory: "Tick Timers",
         category: "Dungeons",
     })
     secretTick = false
@@ -67,7 +83,7 @@ class Settings {
     @SwitchProperty({
         name: "Outbounds tick timer",
         description: "Tick timer for before the dungeon starts",
-        subcategory: "General",
+        subcategory: "Tick Timers",
         category: "Dungeons",
     })
     outTick = false
@@ -560,6 +576,8 @@ class Settings {
         this.addDependency("Berserk Keybind", "Leap Keybinds")
         this.addDependency("Outbounds tick timer", "Tick timers")
         this.addDependency("Secret tick timer", "Tick timers")
+        this.addDependency("Use ticks", "Tick timers")
+        this.addDependency("Remove label", "Tick timers")
     }
 }
 
