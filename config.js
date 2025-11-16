@@ -1,6 +1,6 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @NumberProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.6", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.8", {
     getCategoryComparator: () => (a, b) => {
         const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
         return categories.indexOf(a.name) - categories.indexOf(b.name)
