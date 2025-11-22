@@ -556,7 +556,7 @@ class Settings {
         category: "Dungeons",
         subcategory: "Floor 7"
     })
-    compactTerms
+    compactTerms = false
     @SwitchProperty({
         name: "Type stars in chat",
         description: "Allows you to type stars in chat, for example <10star> will turn into ✪✪✪✪✪➎, there's more possible ways to type this syntax.",
