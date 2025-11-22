@@ -97,7 +97,7 @@ termCompactor = register("renderTitle", (title, subtitle, e) =>  {
     const total = amount[2]
     let time = 72000
     let title = ""
-    if (howmanyeth == total && gateDestroyed) {
+    if (howmanyeth == total && (gateDestroyed || currentSplit == "Term4" || currentSplit == "Goldor")) {
         time = 30
         utils.playSound("note.pling", 1, 2)
         title = "&aSection completed!"
@@ -115,8 +115,15 @@ termCompactor = register("renderTitle", (title, subtitle, e) =>  {
     }
     if (howmanyeth == lastHowmanyeth && !subtitle.includes("Pre") && subtitle.includes("device")) {
         let pre = NaN
-        const playerMP = World.getPlayerByName(ChatLib.removeFormatting(player))
-        const playerCoordinates = {x: playerMP.getX(), y: playerMP.getY(), z: playerMP.getZ()}
+        let players = World.getAllPlayers()
+        let playerMP
+        for (let plr of players) {
+            if (plr.getName() == ChatLib.removeFormatting(player)) {
+                playerMP = plr
+            }
+        }
+        let playerCoordinates
+        playerCoordinates = {x: playerMP.getX(), y: playerMP.getY(), z: playerMP.getZ()}
         const difference2 = {x: dev2.x-playerCoordinates.x, y: dev2.y-playerCoordinates.y, z: dev2.z-playerCoordinates.z}
         const difference3 = {x: dev3.x-playerCoordinates.x, y: dev3.y-playerCoordinates.y, z: dev3.z-playerCoordinates.z}
         const difference4 = {x: dev4.x-playerCoordinates.x, y: dev4.y-playerCoordinates.y, z: dev4.z-playerCoordinates.z}
