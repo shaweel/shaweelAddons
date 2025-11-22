@@ -1,6 +1,6 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @NumberProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.8", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.6", {
     getCategoryComparator: () => (a, b) => {
         const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
         return categories.indexOf(a.name) - categories.indexOf(b.name)
@@ -549,6 +549,22 @@ class Settings {
         subcategory: "General"
     })
     chestProfit = false
+
+    @SwitchProperty({
+        name: "Compact terminals",
+        description: "Compacts the terminal titles",
+        category: "Dungeons",
+        subcategory: "Floor 7"
+    })
+    compactTerms
+    @SwitchProperty({
+        name: "Type stars in chat",
+        description: "Allows you to type stars in chat, for example <10star> will turn into ✪✪✪✪✪➎, there's more possible ways to type this syntax.",
+        category: "Miscellaneous",
+        subcategory: "Miscellaneous"
+    })
+    stars = false
+
     constructor() {
         this.initialize(this)
         this.addDependency("Sea creature alert text", "Show title on sea creature catch")
