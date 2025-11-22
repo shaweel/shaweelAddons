@@ -14,7 +14,7 @@ import utils from "../utils"
 
     let latestVersion = "1.0.0"
     request({
-        url: "https://raw.githubusercontent.com/shaweel/shaweelAddons/refs/heads/main/metadata.json",
+        url: "https://raw.githubusercontent.com/shaweel/shaweelAddons/refs/heads/ctjs-1.8.9/metadata.json",
         json: true
     }).then(data => {
         latestVersion = data.version
