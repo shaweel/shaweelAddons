@@ -2,6 +2,10 @@ import utils from "../utils.js"
 import Settings from "../config.js"
 import { editGui, elements, positions, removeLine, setLine, setShouldRender } from "./Gui.js"
 
+const dev2 = {x:60, y:132, z:140}
+const dev3 = {x:1, y:120, z:77}
+const dev4 = {x:63, y:127, z:35}
+
 //Define needed variables
 let bloodOpened = false
 let bloodCleared = false
@@ -25,6 +29,11 @@ let timers = {
 let gateDestroyed = false
 let allTermsDone = false
 let inDungeon = false
+let blowGateAlert = false
+let TermsDone = 0
+let LeversDone = 0
+let oldSplit = "Term0"
+let playerName = Player.getName()
 
 //Define needed constants
 const bossStart=["[BOSS] Bonzo: Gratz for making it this far, but I’m basically unbeatable.", "[BOSS] Scarf: This is where the journey ends for you, Adventurers.", "[BOSS] The Professor: I was burdened with terrible news recently...", "[BOSS] Thorn: Welcome Adventurers! I am Thorn, the Spirit! And host of the Vegan Trials!", "[BOSS] Livid: Welcome, you've arrived right on time. I am Livid, the Master of Shadows.", "[BOSS] Sadan: So you made it all the way here... Now you wish to defy me? Sadan?!"]
@@ -32,6 +41,126 @@ const bossEnd=["[BOSS] Bonzo: Alright, maybe I'm just weak after all..", "[BOSS]
 const watcherOpen = ["[BOSS] The Watcher: Congratulations, you made it through the Entrance.", "[BOSS] The Watcher: Ah, you've finally arrived.", "[BOSS] The Watcher: Ah, we meet again...", "[BOSS] The Watcher: So you made it this far... interesting.", "[BOSS] The Watcher: You've managed to scratch and claw your way here, eh?", "[BOSS] The Watcher: I'm starting to get tired of seeing you around here...", "[BOSS] The Watcher: Oh.. hello?", "[BOSS] The Watcher: Things feel a little more roomy now, eh?"]
 const necronStart = ["[BOSS] Necron: Finally, I heard so much about you. The Eye likes you very much.", "[BOSS] Necron: You went further than any human before, congratulations."]
 
+register("tick", () => {
+    if (!Settings.gateSound && !Settings.gateTitle) return
+    if (oldSplit != currentSplit) {
+        oldSplit = currentSplit
+        TermsDone = 0
+        LeversDone = 0
+    }
+    if (!blowGateAlert) return
+    if (gateDestroyed) {
+        blowGateAlert = false
+        return
+    }
+
+    if (Settings.gateSound) {
+        utils.playSound("note.pling", 1, 2)
+    }
+
+    if (Settings.gateTitle && !Settings.compactTerms) {
+        Client.showTitle(Settings.gateText, "", 0, 72000, 10)
+    }
+})
+
+register("chat", (player) => {
+    if (player != playerName) return
+    TermsDone+=1
+    utils.debugLog("Player has activated a terminal.")
+}).setCriteria("${player} activated a terminal! (${amount}/${max})")
+
+register("chat", (player) => {
+    if (player != playerName) return
+    LeversDone+=1
+    if ((currentSplit === "Term1" || currentSplit === "Term3") && LeversDone === 2 && !gateDestroyed) {
+        utils.debugLog("Player has activated both levers in S1/S3, alerting blow gate.")
+        blowGateAlert = true
+    }
+    if (currentSplit === "Term2" && LeversDone === 1 && !gateDestroyed && TermsDone === 0) {
+        utils.debugLog("Player has activated a lever in S2 and hasn't done any terminal, alerting blow gate.")
+        blowGateAlert = true
+    }
+}).setCriteria("${player} activated a lever! (${amount}/${max})")
+
+let lastHowmanyeth = 0
+let lastTotal = 0
+
+termCompactor = register("renderTitle", (title, subtitle, e) =>  {
+    if (subtitle.includes("|")) return
+    const player = subtitle.split(" ")[0]
+    let amount = subtitle.split("(")[1]
+    if (!amount == undefined) {
+        amount=amount.split(")")[0]
+    }
+    amount=ChatLib.removeFormatting(amount)
+    const howmanyeth = amount[0]
+    const total = amount[2]
+    let time = 72000
+    let title = ""
+    if (howmanyeth == total && gateDestroyed) {
+        time = 30
+        utils.playSound("note.pling", 1, 2)
+        title = "&aSection completed!"
+    } else if (howmanyeth == total) {
+        utils.playSound("random.anvil_land", 1, 1)
+        title = "&4&lGate not destroyed!"
+    }
+    if (lastHowmanyeth == lastTotal && lastHowmanyeth != 0) {
+        time = 30
+        utils.playSound("note.pling", 1, 2)
+        title = "&aSection completed!"
+    }
+    if (Settings.gateTitle && blowGateAlert) {
+        title = Settings.gateText
+    }
+    if (howmanyeth == lastHowmanyeth && !subtitle.includes("Pre") && subtitle.includes("device")) {
+        let pre = NaN
+        const playerMP = World.getPlayerByName(ChatLib.removeFormatting(player))
+        const playerCoordinates = {x: playerMP.getX(), y: playerMP.getY(), z: playerMP.getZ()}
+        const difference2 = {x: dev2.x-playerCoordinates.x, y: dev2.y-playerCoordinates.y, z: dev2.z-playerCoordinates.z}
+        const difference3 = {x: dev3.x-playerCoordinates.x, y: dev3.y-playerCoordinates.y, z: dev3.z-playerCoordinates.z}
+        const difference4 = {x: dev4.x-playerCoordinates.x, y: dev4.y-playerCoordinates.y, z: dev4.z-playerCoordinates.z}
+        const distance2 = Math.sqrt(difference2.x**2+difference2.y**2+difference2.z**2)
+        const distance3 = Math.sqrt(difference3.x**2+difference3.y**2+difference3.z**2)
+        const distance4 = Math.sqrt(difference4.x**2+difference4.y**2+difference4.z**2)
+        const closestDistance = Math.min(distance2, distance3, distance4)
+        if (closestDistance == distance2) pre="2"
+        if (closestDistance == distance3) pre="3"
+        if (closestDistance == distance4) pre="4"
+        e.setCanceled(true)
+        Client.showTitle(title, player+"&7 | &ePre"+pre, 0, time, 10)
+        if (howmanyeth != "u") {
+            lastHowmanyeth = howmanyeth
+            lastTotal = total
+        }
+        return
+    }
+    if (howmanyeth != "u") {
+        lastHowmanyeth = howmanyeth
+        lastTotal = total
+    }
+    if (subtitle.includes("terminal")) {
+        e.setCanceled(true)
+        Client.showTitle(title, player+"&7 | &eTerm &7| &c"+howmanyeth+"&a/"+total, 0, time, 10)
+        return
+    }
+    if (subtitle.includes("lever")) {
+        e.setCanceled(true)
+        Client.showTitle(title, player+"&7 | &eLever &7| &c"+howmanyeth+"&a/"+total, 0, time, 10)
+        return
+    }
+    if (subtitle.includes("device")) {
+        e.setCanceled(true)
+        Client.showTitle(title, player+"&7 | &eDevice &7| &c"+howmanyeth+"&a/"+total, 0, time, 10)
+        return
+    }
+    if (subtitle.includes("The gate has been destroyed")) {
+        e.setCanceled(true)
+        Client.showTitle(title, "&eGate destroyed", 0, time, 10)
+        return
+    }
+})
+termCompactor.unregister()
 
 register("step", () => { 
     //Return if Splits are disabled
@@ -120,6 +249,8 @@ register("step", () => {
         currentSplit = "Term2"
         utils.chatLog("&6Terminal Section 1 &7completed in&a "+utils.formatSmallNumber(timers.term1, 2)+"s")
         utils.debugLog("&6Terminal Section 2 &7started.")
+        lastHowmanyeth = 0
+        lastTotal = 0
     //Terminal section 3
     } else if (currentSplit == "Term2" && gateDestroyed && allTermsDone) {
         allTermsDone = false
@@ -129,6 +260,8 @@ register("step", () => {
         currentSplit = "Term3"
         utils.chatLog("&6Terminal Section 2 &7completed in&a "+utils.formatSmallNumber(timers.term2, 2)+"s")
         utils.debugLog("&6Terminal Section 3 &7started.")
+        lastHowmanyeth = 0
+        lastTotal = 0
     //Terminal section 4
     } else if (currentSplit == "Term3" && gateDestroyed && allTermsDone) {
         allTermsDone = false
@@ -138,13 +271,18 @@ register("step", () => {
         currentSplit = "Term4"
         utils.chatLog("&6Terminal Section 3 &7completed in&a "+utils.formatSmallNumber(timers.term3, 2)+"s")
         utils.debugLog("&6Terminal Section 4 &7started.")
+        lastHowmanyeth = 0
+        lastTotal = 0
     //Goldor
     } else if (currentSplit == "Term4" && allTermsDone) {
         allTermsDone = false
         currentSplit = "Goldor"
+        termCompactor.unregister()
         utils.chatLog("&6Terminal Section 4 &7completed in&a "+utils.formatSmallNumber(timers.term4, 2)+"s")
         utils.chatLog("&6Terminals &7completed in &a"+utils.formatSmallNumber(timers.term1+timers.term2+timers.term3+timers.term4, 2)+"s")
         utils.debugLog("&eGoldor &7phase of dungeon started.")
+        lastHowmanyeth = 0
+        lastTotal = 0
     }
 
     //Update the GUI
@@ -238,8 +376,13 @@ register("chat", () => {
 //Terminal Section 1
 register("chat", () => {
     utils.chatLog("&dStorm &7phase of dungeon completed in&a "+utils.formatSmallNumber(timers.storm, 2)+"s")
+    if (Settings.compactTerms) {
+        termCompactor.register()
+    }
     utils.debugLog("&6Terminal Section 1 &7started.")
     currentSplit="Term1"
+    lastHowmanyeth = 0
+    lastTotal = 0
 }).setCriteria("[BOSS] Goldor: Who dares trespass into my domain?")
 
 //Necron
