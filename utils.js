@@ -6,8 +6,8 @@ let translationsFolder = new java.io.File("./config/ChatTriggers/modules/shaweel
 translationsFolder = translationsFolder.listFiles()
 let translations = {}
 for (translation of translationsFolder) {
-    const name = String(translation.getName())
-    translations[name.replaceAll(".txt", "")] = FileLib.read("shaweelAddons", "translations/"+name).replaceAll(" ", "").split(",")
+	const name = String(translation.getName())
+	translations[name.replaceAll(".txt", "")] = FileLib.read("shaweelAddons", "translations/"+name).replaceAll(" ", "").split(",")
 }
 
 //Cache
@@ -21,276 +21,336 @@ let usedSounds = Object.create(null)
 
 //Self-explanatory utility functions
 class utils {
-    getTranslation(word) {
-        try {
-            return translations[word]
-        } catch (err) {
-            return null
-        }
-    }
-    debugLog(debugMessage) {
-        if (debugMode == 1) {
-            ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &7"+debugMessage)
-        }
-    }
+	spawnLocations = {
+		'Private Island': [7, 100, 7],
+		'The Hub': [-3, 70, -70],
+		'Dungeon Hub': [-31, 121, 0],
+		'The Farming Islands': [113, 71, -208],
+		'The Park': [-279, 82, -14],
+		'Gold Mine': [-5, 74, -279],
+		'Deep Caverns': [4, 157, 80],
+		'Dwarven Mines': [-49, 200, -122],
+		'Crystal Hollows': [213, 113, 417],
+		'Spider\'s Den': [-203, 83, -233],
+		'The End': [-503, 101, -275],
+		'Crimson Isle': [-361, 80, -431],
+		'Garden': [-6, 71, 17],
+		'The Rift': [-45, 122, 69],
+		'Backwater Bayou': [-13, 74, -11],
+		'Dark Auction': [91, 75, 180],
+		'Catacombs': [0, 100, 0],
+		'Mineshaft': [-182, 100, -192],
+		'Kuudra': [-101, 100, -186],
+		"Jerry's Workshop": [-5, 76, 100]
+	}
 
-    pseudoDebugLog(debugMessage) {
-        ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &7"+debugMessage)
-    }
+	getTranslation(word) {
+		try {
+			return translations[word]
+		} catch (err) {
+			return null
+		}
+	}
+	debugLog(debugMessage) {
+		if (debugMode == 1) {
+			ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &7"+debugMessage)
+		}
+	}
 
-    chatLog(chatMessage) {
-        ChatLib.chat("&d[shaweelAddons] &7"+chatMessage)
-    }
+	pseudoDebugLog(debugMessage) {
+		ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &7"+debugMessage)
+	}
 
-    errorLog(chatMessage) {
-        ChatLib.chat("&d[shaweelAddons] &4[ERROR] &c"+chatMessage)
-    }
+	chatLog(chatMessage) {
+		ChatLib.chat("&d[shaweelAddons] &7"+chatMessage)
+	}
 
-    toggleDebugMode() {
-        debugMode *= -1
-        FileLib.write("./config/ChatTriggers/modules/shaweelAddons/debugMode.txt", String(debugMode))
+	errorLog(chatMessage) {
+		ChatLib.chat("&d[shaweelAddons] &4[ERROR] &c"+chatMessage)
+	}
 
-        if (debugMode == 1) {
-            ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &aDebug mode activated.")
-        } else {
-            ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &cDebug mode deactivated.")
-        }
-    }
+	toggleDebugMode() {
+		debugMode *= -1
+		FileLib.write("./config/ChatTriggers/modules/shaweelAddons/debugMode.txt", String(debugMode))
 
-    //Returns -1 if you aren't in a dungeon
-    getDungeonFloor() {
-        if (Date.now() - lastDungeonFloorCacheUpdate < 1000) {
-            return cachedDungeonFloor
-        }
-        lastDungeonFloorCacheUpdate = Date.now()
-        let floor = ""
-        let lines = Scoreboard.getLines()
-        for (let line of lines) {
-            line = String(line)
-            if (line.includes("Dragon")) {
-                cachedDungeonFloor = 14
-                return 14
-            }
-            if (line.includes("Healthy")) {
-                return cachedDungeonFloor
-            }
-            if (line.includes("Cata")) {
-                floor = line
-            }
-        }
-        if (floor.includes("F")) {
-            let floorNum = Number(floor.split("F")[1].replace(")", ""))
-            cachedDungeonFloor = floorNum
-            return floorNum
-        }
-        if (floor.includes("M")) {
-            let floorNum = Number(floor.split("M")[1].replace(")", ""))
-            cachedDungeonFloor = floorNum + 7
-            return floorNum+7
-        }
-        cachedDungeonFloor = -1
-        return -1
-    }
-    getDungeonClass() {
-        if (Date.now() - lastDungeonClassCacheUpdate < 1000) {
-            return cachedDungeonClass
-        }
-        //Return null if you're not in a dungeon
-        lastDungeonClassCacheUpdate = Date.now()
-        cachedDungeonClass = null
-        if (this.getDungeonFloor() == -1) return null
-        //Define all classes
-        let tank = true
-        let heal = true
-        let mage = true
-        let bers = true
-        let arch = true
+		if (debugMode == 1) {
+			ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &aDebug mode activated.")
+		} else {
+			ChatLib.chat("&d[shaweelAddons] &e[DEBUG] &cDebug mode deactivated.")
+		}
+	}
 
-        //Set all classes that are in the scoreboard to false
-        let lines = Scoreboard.getLines()
-        for (let line of lines) {
-            line = String(line)
-            if (line.includes("[T]")) {
-                tank = false
-            }
-            if (line.includes("[B]")) {
-                bers = false
-            }
-            if (line.includes("[A]")) {
-                arch = false
-            }
-            if (line.includes("[H]")) {
-                heal = false
-            }
-            if (line.includes("[M]")) {
-                mage = false
-            }
-        }
+	//Returns -1 if you aren't in a dungeon
+	getDungeonFloor() {
+		if (Date.now() - lastDungeonFloorCacheUpdate < 1000) {
+			return cachedDungeonFloor
+		}
+		lastDungeonFloorCacheUpdate = Date.now()
+		let floor = ""
+		let lines = Scoreboard.getLines()
+		for (let line of lines) {
+			line = String(line)
+			line = ChatLib.removeFormatting(line)
+			if (line.includes("No Alive Dragons") || line.includes("Soul Dragon") || line.includes("Power Dragon") || line.includes("Flame Dragon") || line.includes("Apex Dragon") || line.includes("Ice Dragon")) {
+				cachedDungeonFloor = 14
+				return 14
+			}
+			if (line.includes("Healthy")) {
+				return cachedDungeonFloor
+			}
+			if (line.includes("Cata")) {
+				floor = line
+			}
+		}
+		if (floor.includes("F")) {
+			let floorNum = Number(floor.split("F")[1].replace(")", ""))
+			cachedDungeonFloor = floorNum
+			return floorNum
+		}
+		if (floor.includes("M")) {
+			let floorNum = Number(floor.split("M")[1].replace(")", ""))
+			cachedDungeonFloor = floorNum + 7
+			return floorNum+7
+		}
+		cachedDungeonFloor = -1
+		return -1
+	}
+	drawCustomText(title, time, fadeIn, fadeOut) {
+		let startTime = Date.now()
+		const render = register("renderOverlay", () => {
+			const text = new Text(title, Renderer.screen.getWidth()/2, Renderer.screen.getHeight()/2.333)
+			text.setAlign(DisplayHandler.Align.CENTER)
+			text.setScale(Renderer.screen.getWidth()/237)
+			text.setShadow(true)
+			const sinceStart = Date.now() - startTime
+			text.setColor(0xFFFF5555)
+			if (sinceStart > 0 && sinceStart < fadeIn) {
+				let alpha = Math.floor((sinceStart / fadeIn) * 255)
+				alpha = Math.max(0, Math.min(255, alpha))
+				const rgb = 0xFF5555
+				text.setColor((alpha << 24) | rgb)
+			}
+			if (sinceStart > time+fadeIn) {
+				let alpha = Math.floor(255 - ((sinceStart - time - fadeIn) / fadeOut) * 255)
+				alpha = Math.max(0, Math.min(255, alpha))
+				const rgb = 0xFF5555
+				text.setColor((alpha << 24) | rgb)
+			}
+			text.draw()
+			lastTime = Date.now()
+		})
+		setTimeout(() => {
+			render.unregister()
+		}, time+fadeIn+fadeOut);
+	}
+	getDungeonClass() {
+		if (Date.now() - lastDungeonClassCacheUpdate < 1000) {
+			return cachedDungeonClass
+		}
+		//Return null if you're not in a dungeon
+		lastDungeonClassCacheUpdate = Date.now()
+		cachedDungeonClass = null
+		if (this.getDungeonFloor() == -1) return null
+		//Define all classes
+		let tank = true
+		let heal = true
+		let mage = true
+		let bers = true
+		let arch = true
 
-        //Return the correct class
-        if (mage && tank && bers && heal && arch) {
-            cachedDungeonClass = "Solo"
-            return "Solo"
-        } 
-        if (mage) {
-            cachedDungeonClass = "Mage"
-            return "Mage"
-        }
-        if (tank) {
-            cachedDungeonClass = "Tank"
-            return "Tank"
-        }
-        if (bers) {
-            cachedDungeonClass = "Berserker"
-            return "Berserker"
-        }
-        if (heal) {
-            cachedDungeonClass = "Healer"
-            return "Healer"
-        }
-        if (arch) {
-            cachedDungeonClass = "Archer"
-            return "Archer"
-        }
-    }
+		//Set all classes that are in the scoreboard to false
+		let lines = Scoreboard.getLines()
+		for (let line of lines) {
+			line = String(line)
+			if (line.includes("[T]")) {
+				tank = false
+			}
+			if (line.includes("[B]")) {
+				bers = false
+			}
+			if (line.includes("[A]")) {
+				arch = false
+			}
+			if (line.includes("[H]")) {
+				heal = false
+			}
+			if (line.includes("[M]")) {
+				mage = false
+			}
+		}
 
-    getClassMilestone() {
-        if (Date.now() - lastClassMilestoneCacheUpdate < 1000) {
-            return cachedClassMilestone
-        }
-        let names = TabList.getNames()
-        for (let name of names) {
-            if (!name.includes(" Your Milestone: ")) continue
-            let ms = name.split(" Your Milestone: §r§e")[1]
-            ms = ms.split("§r")[0]
-            if (ms=="?") {
-                ms="0"
-            }
-            let replaceMap = {"☠":"", "❤":"", "☄":"", "♦":"", "⓿":"0", "❶":"1", "❷":"2", "❸": "3", "❹": "4", "❺": "5", "❻": "6", "❼": "7", "❽": "8", "❾": "9"}
-            ms = ms.replace(/./g, character => replaceMap[character] ?? character)
-            cachedClassMilestone = ms
-            return ms
-        }
-        cachedClassMilestone = null
-        return null
-    }
+		//Return the correct class
+		if (mage && tank && bers && heal && arch) {
+			cachedDungeonClass = "Solo"
+			return "Solo"
+		} 
+		if (mage) {
+			cachedDungeonClass = "Mage"
+			return "Mage"
+		}
+		if (tank) {
+			cachedDungeonClass = "Tank"
+			return "Tank"
+		}
+		if (bers) {
+			cachedDungeonClass = "Berserker"
+			return "Berserker"
+		}
+		if (heal) {
+			cachedDungeonClass = "Healer"
+			return "Healer"
+		}
+		if (arch) {
+			cachedDungeonClass = "Archer"
+			return "Archer"
+		}
+	}
 
-    roundToDecimals(num, amount) {
-        let changer = 10**amount
-        num = num*changer
-        num = Math.round(num)
-        num = num/changer
-        return num
-    }
-    assignElementName(assignIndex) {
-        if (assignIndex == 0) return "katanaHud"
-        if (assignIndex == 1) return "Splits"
-        if (assignIndex == 2) return "chestProfit"
-        if (assignIndex == 3) return "tick"
-        console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(assignElementName)("+assignIndex+")")
-    }
-    
-    getIndexFromName(name) {
-        if (name == "katanaHud") return 0
-        if (name == "Splits") return 1
-        if (name == "chestProfit") return 2
-        if (name == "tick") return 3
-        console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(getIndexFromName)("+name+")")
-    }
+	getClassMilestone() {
+		if (Date.now() - lastClassMilestoneCacheUpdate < 1000) {
+			return cachedClassMilestone
+		}
+		let names = TabList.getNames()
+		for (let name of names) {
+			if (!name.includes(" Your Milestone: ")) continue
+			let ms = name.split(" Your Milestone: §r§e")[1]
+			ms = ms.split("§r")[0]
+			if (ms=="?") {
+				ms="0"
+			}
+			let replaceMap = {"☠":"", "❤":"", "☄":"", "♦":"", "⓿":"0", "❶":"1", "❷":"2", "❸": "3", "❹": "4", "❺": "5", "❻": "6", "❼": "7", "❽": "8", "❾": "9"}
+			ms = ms.replace(/./g, character => replaceMap[character] ?? character)
+			cachedClassMilestone = ms
+			return ms
+		}
+		cachedClassMilestone = null
+		return null
+	}
 
-    formatLargeNumber(num) {
-        //Get the sign
-        let sign = Math.sign(num)
+	roundToDecimals(num, amount) {
+		let changer = 10**amount
+		num = num*changer
+		num = Math.round(num)
+		num = num/changer
+		return num
+	}
+	assignElementName(assignIndex) {
+		if (assignIndex == 0) return "katanaHud"
+		if (assignIndex == 1) return "Splits"
+		if (assignIndex == 2) return "chestProfit"
+		if (assignIndex == 3) return "tick"
+		console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(assignElementName)("+assignIndex+")")
+	}
+	
+	getIndexFromName(name) {
+		if (name == "katanaHud") return 0
+		if (name == "Splits") return 1
+		if (name == "chestProfit") return 2
+		if (name == "tick") return 3
+		console.error("shaweel is stupid and forgot to asign a gui to the index, blame shaweel(getIndexFromName)("+name+")")
+	}
 
-        //Format the number's absolute to a String and get it's length
-        num = Math.abs(num)
-        num = String(num)
-        numLen = num.length
+	formatLargeNumber(num) {
+		//Get the sign
+		let sign = Math.sign(num)
 
-        //Make an array of all characters in the number
-        let numArray = []
-        for (char of num) {
-            numArray.push(char)
-        }
+		//Format the number's absolute to a String and get it's length
+		num = Math.abs(num)
+		num = String(num)
+		numLen = num.length
 
-        //Add the ","
-        let amount = 0
-        let index = 0
-        for (char of num) {
-            index += 1
-            if (numLen % 3 == index % 3 && index != numLen) {
-                numArray.splice(index+amount, 0, ",")
-                amount++
-            }
-        }
+		//Make an array of all characters in the number
+		let numArray = []
+		for (char of num) {
+			numArray.push(char)
+		}
 
-        //Correct the sign
-        if (sign == -1) {
-            num = "-"
-        } else {
-            num = ""
-        }
+		//Add the ","
+		let amount = 0
+		let index = 0
+		for (char of num) {
+			index += 1
+			if (numLen % 3 == index % 3 && index != numLen) {
+				numArray.splice(index+amount, 0, ",")
+				amount++
+			}
+		}
 
-        //Make the final number
-        for (char of numArray) {
-            num += char
-        }
+		//Correct the sign
+		if (sign == -1) {
+			num = "-"
+		} else {
+			num = ""
+		}
 
-        //Return the number
-        return num
-    }
+		//Make the final number
+		for (char of numArray) {
+			num += char
+		}
 
-    formatSmallNumber(num, decimals) {
-        //Round the number
-        num = String(this.roundToDecimals(num, decimals))
+		//Return the number
+		return num
+	}
 
-        //If there is no decimal point add . and then 0s based on the decimal amount to prevent flickering in timers, 1 will be changed to 1.0 or 1.00
-        //or 1.000 etc... 2 to 2.0 or 2.00 or 2.000 etc... then return the number
-        if (!num.includes(".")) {
-            num = num+"."+"0".repeat(decimals)
-            return num
-        }
+	formatSmallNumber(num, decimals) {
+		//Round the number
+		num = String(this.roundToDecimals(num, decimals))
 
-        //If there aren't as much 0s as the decimals the number is being rounded to, add 0s based on the decimal amount to prevent flickering in timers
-        let numLength = num.split(".")[1].length
-        if (numLength < decimals) {
-            let difference = decimals - numLength
-            num = num+"0".repeat(difference)
-        }
+		//If there is no decimal point add . and then 0s based on the decimal amount to prevent flickering in timers, 1 will be changed to 1.0 or 1.00
+		//or 1.000 etc... 2 to 2.0 or 2.00 or 2.000 etc... then return the number
+		if (!num.includes(".")) {
+			num = num+"."+"0".repeat(decimals)
+			return num
+		}
 
-        //Return the number
-        return num
-    }
-    playSound(sound, soundVolume, soundPitch) {
-        sound = sound+".ogg"
-        sound = String(sound)
-        let toPlay
-        if (usedSounds[sound]) {
-            toPlay = usedSounds[sound]
-        } else {
-            toPlay = new Sound({source: sound})
-            usedSounds[sound] = toPlay
-        }
-        toPlay.stop()
-        toPlay.setVolume(soundVolume)
-        toPlay.setPitch(soundPitch)
-        toPlay.setAttenuation(0)
-        toPlay.play()
-    }
+		//If there aren't as much 0s as the decimals the number is being rounded to, add 0s based on the decimal amount to prevent flickering in timers
+		let numLength = num.split(".")[1].length
+		if (numLength < decimals) {
+			let difference = decimals - numLength
+			num = num+"0".repeat(difference)
+		}
 
-    drawRoundedRect(color, x, y, width, height, radius) {
-        Renderer.drawRect(color, x+radius, y, width - 2*radius, height)
-        Renderer.drawRect(color, x, y+radius, width, height - 2*radius)
-        Renderer.drawCircle(color, x+radius, y+radius, radius, 10*radius)
-        Renderer.drawCircle(color, x+width-radius, y+radius, radius, 10*radius)
-        Renderer.drawCircle(color, x+radius, y+height-radius, radius, 10*radius)
-        Renderer.drawCircle(color, x-radius+width, y+height-radius, radius, 10*radius)
-    }
+		//Return the number
+		return num
+	}
+	playSound(sound, soundVolume, soundPitch) {
+		sound = sound+".ogg"
+		sound = String(sound)
+		let toPlay
+		if (usedSounds[sound]) {
+			toPlay = usedSounds[sound]
+		} else {
+			toPlay = new Sound({source: sound})
+			usedSounds[sound] = toPlay
+		}
+		toPlay.stop()
+		toPlay.setVolume(soundVolume)
+		toPlay.setPitch(soundPitch)
+		toPlay.setAttenuation(0)
+		toPlay.play()
+	}
 
-    drawOutlinedRoundedRect(color, outlineColor, x, y, width, height, radius, thickness) {
-        this.drawRoundedRect(outlineColor, x - thickness, y - thickness, width + 2 * thickness, height + 2 * thickness, radius)
-        this.drawRoundedRect(color, x, y, width, height, radius)
-    }
+	drawRoundedRect(color, x, y, width, height, radius) {
+		Renderer.drawRect(color, x+radius, y, width - 2*radius, height)
+		Renderer.drawRect(color, x, y+radius, width, height - 2*radius)
+		Renderer.drawCircle(color, x+radius, y+radius, radius, 10*radius)
+		Renderer.drawCircle(color, x+width-radius, y+radius, radius, 10*radius)
+		Renderer.drawCircle(color, x+radius, y+height-radius, radius, 10*radius)
+		Renderer.drawCircle(color, x-radius+width, y+height-radius, radius, 10*radius)
+	}
+
+	drawOutlinedRoundedRect(color, outlineColor, x, y, width, height, radius, thickness) {
+		this.drawRoundedRect(outlineColor, x - thickness, y - thickness, width + 2 * thickness, height + 2 * thickness, radius)
+		this.drawRoundedRect(color, x, y, width, height, radius)
+	}
+
+	getSkyblockIsland() {
+		let currentSpawnLocation = [World.spawn.getX(), World.spawn.getY(), World.spawn.getZ()]
+		for (let spawnLocation in this.spawnLocations) {
+			if (this.spawnLocations[spawnLocation] == currentSpawnLocation) return spawnLocation
+		}
+		return null
+	}
 }
 
 export default new utils() 
