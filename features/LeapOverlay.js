@@ -1,4 +1,4 @@
-import utils from "../utils.js"
+import Utils from "../Utils.js"
 import Settings from "../config.js"
 
 function isIn(mouseX, mouseY, x, y, width, height) {
@@ -77,7 +77,7 @@ function drawPlayer(color, outlineColor, x, y, width, height, radius, thickness,
 	let drawX = x - (drawWidth - width) / 2
 	let drawY = y - (drawHeight - height) / 2
 
-	utils.drawOutlinedRoundedRect(color, outlineColor, drawX, drawY, drawWidth, drawHeight, radius, thickness)
+	Utils.drawOutlinedRoundedRect(color, outlineColor, drawX, drawY, drawWidth, drawHeight, radius, thickness)
 
 	boxes[id] = {x: drawX, y: drawY, width: drawWidth, height: drawHeight, username: username, clazz: clazz}
 	if (clazz === "Tank") {
@@ -167,38 +167,38 @@ register("guiOpened", (event) =>  {
 	if (localInventory.getName() !== "Spirit Leap") return
 	inventory = localInventory
 	leapGui.open()
-	utils.debugLog("Opening leap overlay.")
+	Utils.debugLog("Opening leap overlay.")
 })
 
 function leapTo(username, clazz) {
-	utils.debugLog(username)
-	utils.debugLog(clazz)
+	Utils.debugLog(username)
+	Utils.debugLog(clazz)
 	if (inventory === null) return
 	let items = inventory.getItems()
 	let index = -1
 	let toClick = null
-	utils.debugLog(username)
-	utils.debugLog(clazz)
+	Utils.debugLog(username)
+	Utils.debugLog(clazz)
 	for (item of items) {
 		index++
 		try {
 			let name = ChatLib.removeFormatting(item.getName())
 			username = ChatLib.removeFormatting(username)
-			utils.debugLog(username)
+			Utils.debugLog(username)
 			if (name === username && ChatLib.removeFormatting(item.getLore()[1]) !== "This player is currently dead!") {
 				toClick = index
 			}
-		} catch (error) {}
+		} catch (err) {}
 	}
 	if (toClick) {
 		inventory.click(toClick, false, "MIDDLE")
-		utils.debugLog("Leaping to "+ChatLib.removeFormatting(username))
+		Utils.debugLog("Leaping to "+ChatLib.removeFormatting(username))
 		if (Settings.leapAnnounce) {
 			ChatLib.command("pc Leaping to "+ChatLib.removeFormatting(username)+" ("+ChatLib.removeFormatting(clazz)+")")
 		}
 		leapGui.close()
 	} else {
-		utils.chatLog("No player to leap to.")
+		Utils.chatLog("No player to leap to.")
 	}
 }
 

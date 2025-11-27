@@ -1,6 +1,6 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.11", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.12", {
 	getCategoryComparator: () => (a, b) => {
 		const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
 		return categories.indexOf(a.name) - categories.indexOf(b.name)
@@ -435,30 +435,27 @@ class Settings {
 		subcategory: "Floor 7"
 	})
 	crystalSound = false 
-
 	@SwitchProperty({
-		name: "Show title on SS Reset",
-		description: "When enabled you will see a title whenever someone messess up SS(must be said in chat)",
+		name: "Crystal Placed Alert",
+		description: "Shows a title when you place a crystal in Maxor",
 		category: "Dungeons",
 		subcategory: "Floor 7"
 	})
-	sstitle = false
-
+	crystalPlaceTitle = false 
 	@TextProperty({
-		name: "SS Reset alert text",
-		description: "The text you will see whenever someone messess up SS(must be said in chat), good for archers doing ee2",
+		name: "Crystal Placed Text",
+		description: "The text that shows when you place a crystal in Maxor",
 		category: "Dungeons",
 		subcategory: "Floor 7"
 	})
-	sstext = "&4&lSS Reset!"
-
+	crystalPlaceText = "&dCrystal Placed!" 
 	@SwitchProperty({
-		name: "Play sound on SS Reset",
-		description: "When enabled a sound, which you can change in the assets will play whenever someone messess up SS(must be said in chat)",
+		name: "Crystal Placed Sound",
+		description: "Plays a sound when you place a crystal in Maxor",
 		category: "Dungeons",
 		subcategory: "Floor 7"
 	})
-	sssound = false
+	crystalPlaceSound = false 
 
 	@SwitchProperty({
 		name: "Show title on sea creature catch",
@@ -519,7 +516,6 @@ class Settings {
 	constructor() {
 		this.initialize(this)
 		this.addDependency("Sea creature alert text", "Show title on sea creature catch")
-		this.addDependency("SS Reset alert text", "Show title on SS Reset")
 		this.addDependency("Low health alert text", "Show title on low health")
 		this.addDependency("Rat kill text", "Show title on rat kill")
 		this.addDependency("Blow gate text", "Alert blow gate")
@@ -534,6 +530,7 @@ class Settings {
 		this.addDependency("Wished Text", "Wished")
 		this.addDependency("Wish Text", "Wish Alert")
 		this.addDependency("Crystal Text", "Crystal Alert")
+		this.addDependency("Crystal Placed Text", "Crystal Placed Alert")
 		this.addDependency("Leap Announce", "Leap Overlay")
 		this.addDependency("Leap Keybinds", "Leap Overlay")
 		this.addDependency("Outbounds tick timer", "Tick timers")

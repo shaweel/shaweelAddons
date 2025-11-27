@@ -1,11 +1,11 @@
 import Settings from "../config.js"
-import utils from "../utils.js"
+import Utils from "../Utils.js"
 
 function registerExtraLifeItem(chatMessage, title, text, sound) {
 	register("chat", () => {
 		sinceLastBonzo = Date.now()
-		if (Settings[sound]) utils.playSound("note.pling", 1, 2) 
-		if (Settings[title]) utils.drawCustomText(Settings[text], 500, 500, 500)
+		if (Settings[sound]) Utils.playSound("note.pling", 1, 2) 
+		if (Settings[title]) Utils.drawCustomTitle(Settings[text], 500, 500, 500)
 	}).setCriteria(chatMessage)
 }
 
