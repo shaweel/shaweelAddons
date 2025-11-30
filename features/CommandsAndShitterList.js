@@ -6,7 +6,7 @@ function tyfr() {
 	ChatLib.command("pc tyfr")
 	setTimeout(() => {
 		ChatLib.command("p leave")
-	}, 500);
+	}, 750);
 }
 
 
@@ -188,7 +188,7 @@ register("command", (...args) => {
 		ChatLib.chat("&a/sha config(or just /sha)&7 - Opens the config.")
 		ChatLib.chat("&a/sha gui&7 - Opens the gui editor.")
 		ChatLib.chat("&a/sha shitterlist(aliases: sl, shitter, slist, shitters)&7 - The local shitterlist, use &a/sha shitterlist&7 to learn more")
-		ChatLib.chat("&a/sha debug&7 - Debug commands mainly used by shaweel to make the development process easier.")
+		ChatLib.chat('&a/sha tyfr(or just /tyfr)&7 - Sends "tyfr" in chat and leaves the party.')
 		ChatLib.chat("&a/sha debugmode&7 - Gives extra information, that is useless if you're not working on the mod and just using it.")
 		ChatLib.chat("&a/sha help&7 - Prints this help message.")
 		return

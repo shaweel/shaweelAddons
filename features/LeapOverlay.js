@@ -212,11 +212,37 @@ register("guiMouseClick", (mouseX, mouseY, mouseButton, gui, event) => {
 	}
 })
 
-const archerKeybind = new KeyBind("Archer Leap Keybind", Keyboard.KEY_NONE, "shaweelAddons")
-const berserkKeybind = new KeyBind("Berserk Leap Keybind", Keyboard.KEY_NONE, "shaweelAddons")
-const healerKeybind = new KeyBind("Healer Leap Keybind", Keyboard.KEY_NONE, "shaweelAddons")
-const mageKeybind = new KeyBind("Mage Leap Keybind", Keyboard.KEY_NONE, "shaweelAddons")
-const tankKeybind = new KeyBind("Tank Leap Keybind", Keyboard.KEY_NONE, "shaweelAddons")
+let savedKeybinds = FileLib.read("shaweelAddons", "leapKeybindsBackup.json")
+
+if (savedKeybinds === null) {
+	FileLib.write("shaweelAddons", "leapKeybindsBackup.json", JSON.stringify({"Archer": 0, "Berserk": 0, "Healer": 0, "Mage": 0, "Tank": 0}))
+	Utils.debugLog("File leapKeybindsBackup.json &7didn't exist, creating it.")
+	savedKeybinds = {"Archer": 0, "Berserk": 0, "Healer": 0, "Mage": 0, "Tank": 0}
+} else {
+	savedKeybinds = JSON.parse(savedKeybinds)
+}
+const archerKeybind = new KeyBind("Archer Leap Keybind", savedKeybinds.Archer, "shaweelAddons")
+const berserkKeybind = new KeyBind("Berserk Leap Keybind", savedKeybinds.Berserk, "shaweelAddons")
+const healerKeybind = new KeyBind("Healer Leap Keybind", savedKeybinds.Healer, "shaweelAddons")
+const mageKeybind = new KeyBind("Mage Leap Keybind", savedKeybinds.Mage, "shaweelAddons")
+const tankKeybind = new KeyBind("Tank Leap Keybind", savedKeybinds.Tank, "shaweelAddons")
+
+const keybinds = [archerKeybind, berserkKeybind, healerKeybind, mageKeybind, tankKeybind]
+const keybindOrder = ["Archer", "Berserk", "Healer", "Mage", "Tank"]
+
+register("tick", () => {
+	let oldKeybinds = JSON.stringify(savedKeybinds)
+	for (let keybindIndex = 0; keybindIndex < keybinds.length; keybindIndex++) {
+		let clazz = keybindOrder[keybindIndex]
+		let keyCode = keybinds[keybindIndex].getKeyCode()
+		if (savedKeybinds[clazz] == keyCode) continue
+		Utils.debugLog(clazz+" leap keybind changed to "+keyCode)
+		savedKeybinds[clazz] = keyCode
+	}
+	if (oldKeybinds == JSON.stringify(savedKeybinds)) return
+	Utils.debugLog("Leap keybinds changed, saving")
+	FileLib.write("shaweelAddons", "leapKeybindsBackup.json", JSON.stringify(savedKeybinds))
+})
 
 register("guiKey", (char, keyCode, gui, event) => {
 	if (!Settings.leapOverlay) return

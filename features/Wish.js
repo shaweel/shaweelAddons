@@ -3,10 +3,10 @@ import Utils from "../Utils.js"
 
 const wishMessages = ["[BOSS] Sadan: My giants! Unleashed!", "⚠ Maxor is enraged! ⚠", "[BOSS] Goldor: You have done it, you destroyed the factory…", ]
 
-
+let wishCustomTitle = Utils.drawCustomTitle("", 0, 0, 0)
 function alertWish() {
 	if (Settings.wishTitle) {
-		Utils.drawCustomTitle(Settings.wishText, 500, 500, 500)
+		wishCustomTitle = Utils.drawCustomTitle(Settings.wishText, 500, 500, 500)
 	}
 	if (Settings.wishSound) {
 		Utils.playSound("random.anvil_land", 1, 1)
@@ -15,6 +15,7 @@ function alertWish() {
 
 
 register("chat", () => {
+	wishCustomTitle.erase()
 	if (Settings.wishedTitle) {
 		Utils.drawCustomTitle(Settings.wishedText, 500, 500, 500)
 	}

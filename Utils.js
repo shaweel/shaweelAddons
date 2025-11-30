@@ -1,3 +1,5 @@
+import {request} from "requestV2"
+
 let debugMode = FileLib.read("./config/ChatTriggers/modules/shaweelAddons/debugMode.txt")
 debugMode = Number(debugMode)
 
@@ -18,6 +20,20 @@ let lastDungeonFloorCacheUpdate = 0
 let lastDungeonClassCacheUpdate = 0
 let lastClassMilestoneCacheUpdate = 0
 let usedSounds = Object.create(null)
+
+//Constants
+const catacombsLeveling = [
+	50, 75, 110, 160, 230,
+	330, 470, 670, 950, 1340,
+	1890, 2665, 3760, 5260, 7380,
+	10300, 14400, 20000, 27600, 38000,
+	52500, 71500, 97000, 132000, 180000,
+	243000, 328000, 445000, 600000, 800000,
+	1065000, 1410000, 1900000, 2500000, 3300000,
+	4300000, 5600000, 7200000, 9200000, 12000000,
+	15000000, 19000000, 24000000, 30000000, 38000000,
+	48000000, 60000000, 75000000, 93000000, 116250000
+]
 
 //Self-explanatory utility functions
 class Utils {
@@ -91,12 +107,9 @@ class Utils {
 		for (let line of lines) {
 			line = String(line)
 			line = ChatLib.removeFormatting(line)
-			if (line.includes("No Alive Dragons") || line.includes("Soul Dragon") || line.includes("Power Dragon") || line.includes("Flame Dragon") || line.includes("Apex Dragon") || line.includes("Ice Dragon")) {
+			if (line.includes("Drago🔮n") || line.includes("- Flame") || line.includes("- Soul") || line.includes("- Power") || line.includes("- Ice") || line.includes("- Apex")) {
 				cachedDungeonFloor = 14
 				return 14
-			}
-			if (line.includes("Healthy")) {
-				return cachedDungeonFloor
 			}
 			if (line.includes("Cata")) {
 				floor = line

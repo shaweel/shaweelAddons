@@ -1,4 +1,4 @@
-import { editGui, elements, positions, setLine, setShouldRender } from "./Gui.js"
+import { editGui, elements, getLines, positions, setLine, setShouldRender } from "./Gui.js"
 import Settings from "../config.js"
 import Utils from "../Utils.js"
 
@@ -67,13 +67,11 @@ register("packetReceived", () => {
 			if (Settings.expireSound) {Utils.playSound("note.pling", 1, 1)}
 		}
 		activated = false
-
 		setLine(0, 0, "&cKatana Ability NOT activated")
 	}
 	if (katana.vanillaId == "minecraft:golden_sword") {
 		activated = true
 		countingDown = true
-
 		setLine(0, 0, "&aKatana Ability activated ("+Utils.formatSmallNumber(timer, 1)+")")
 	}
 }).setFilteredClass(net.minecraft.network.play.server.S32PacketConfirmTransaction)

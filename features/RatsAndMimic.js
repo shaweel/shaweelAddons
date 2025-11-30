@@ -9,15 +9,11 @@ register("entityDeath", (entity) => {
 	if (inDungeon && !Settings.mimicAnnounce && !Settings.mimicSound && !Settings.mimicTitle) return
 	if (!inDungeon && !Settings.ratSound && !Settings.ratTitle) return
 	
-	Utils.debugLog("An entity has been killed.")
-
 	if (entity.getClassName() != "EntityZombie") return
 	if (!Utils.getTranslation("zombie").includes(entity.name)) return
 
 	let eyeHeight = entity.getEyeHeight()
 	if (!(eyeHeight < 1 && eyeHeight > 0.9)) return
-
-	Utils.debugLog("The killed entity is either a &aRat&7 or a &aMimic&7.")
 
 	if (inDungeon) {
 		if (!entity.getEntity().func_70631_g_()) return

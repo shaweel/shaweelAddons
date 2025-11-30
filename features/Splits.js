@@ -27,19 +27,20 @@ let timers = {
 	dragons:0
 }
 	
+let gateNotDestroyed = Utils.drawCustomTitle("", 0, 0, 0)
 let gateDestroyed = false
 let allTermsDone = false
 let inDungeon = false
-let blowGateAlert = false
 let splitChanged = new CustomTrigger("splitChanged")
 
 //Define needed constants
 const bossStart=["[BOSS] Bonzo: Gratz for making it this far, but I’m basically unbeatable.", "[BOSS] Scarf: This is where the journey ends for you, Adventurers.", "[BOSS] The Professor: I was burdened with terrible news recently...", "[BOSS] Thorn: Welcome Adventurers! I am Thorn, the Spirit! And host of the Vegan Trials!", "[BOSS] Livid: Welcome, you've arrived right on time. I am Livid, the Master of Shadows.", "[BOSS] Sadan: So you made it all the way here... Now you wish to defy me? Sadan?!"]
-const bossEnd=["[BOSS] Bonzo: Alright, maybe I'm just weak after all..", "[BOSS] Scarf: Whatever...", "[BOSS] The Professor: What?! My Guardian power is unbeatable!", "CROWD: Whatttt? How did they win??", "Livid: Impossible! How did you figure out which one I was?!", "[BOSS] Sadan: NOOOOOOOOO!!! THIS IS IMPOSSIBLE!!"]
+const bossEnd=["[BOSS] Bonzo: Alright, maybe I'm just weak after all..", "[BOSS] Scarf: Whatever...", "[BOSS] The Professor: What?! My Guardian power is unbeatable!", , "[BOSS] Thorn: This is it... where shall I go now?", "Livid: Impossible! How did you figure out which one I was?!", "[BOSS] Sadan: NOOOOOOOOO!!! THIS IS IMPOSSIBLE!!"]
 const watcherOpen = ["[BOSS] The Watcher: Congratulations, you made it through the Entrance.", "[BOSS] The Watcher: Ah, you've finally arrived.", "[BOSS] The Watcher: Ah, we meet again...", "[BOSS] The Watcher: So you made it this far... interesting.", "[BOSS] The Watcher: You've managed to scratch and claw your way here, eh?", "[BOSS] The Watcher: I'm starting to get tired of seeing you around here...", "[BOSS] The Watcher: Oh.. hello?", "[BOSS] The Watcher: Things feel a little more roomy now, eh?"]
 const necronStart = ["[BOSS] Necron: Finally, I heard so much about you. The Eye likes you very much.", "[BOSS] Necron: You went further than any human before, congratulations."]
 
 function triggerSectionComplete() {
+	if (!Settings.compactTerms) return
 	Utils.drawCustomTitle("&aSection complete", 500, 750, 500)
 	Utils.playSound("note.pling", 1, 2)
 	Utils.debugLog("&aSection complete")
@@ -48,8 +49,8 @@ function triggerSectionComplete() {
 let lastHowmanyeth = 0
 let lastTotal = 0
 let onlyGateMissing = false
-termCompactor = register("renderTitle", (title, subtitle, e) =>  {
-	if (subtitle.includes("|")) return //Return on custom titles
+const termCompactor = register("renderTitle", (title, subtitle, e) =>  {
+	if (subtitle.includes("|")) return
 
 	const player = subtitle.split(" ")[0]
 
@@ -108,7 +109,14 @@ termCompactor = register("renderTitle", (title, subtitle, e) =>  {
 		if (closestDistance == distance2) pre="2"
 		if (closestDistance == distance3) pre="3"
 		if (closestDistance == distance4) pre="4"
-
+		if (ChatLib.removeFormatting(player) == ChatLib.removeFormatting(Player.getName()) && pre == "4") {
+			Utils.drawCustomTitle("&aPre4 Complete", 500, 500, 500)
+			Utils.playSound("note.pling", 1, 2)
+		} else {
+			Utils.debugLog(pre)
+			Utils.debugLog(ChatLib.removeFormatting(player))
+			Utils.debugLog(ChatLib.removeFormatting(Player.getName()))
+		}
 		e.setCanceled(true)
 		Client.showTitle("", player+"&7 | &ePre"+pre, 0, time, 10)
 		
@@ -144,6 +152,7 @@ termCompactor = register("renderTitle", (title, subtitle, e) =>  {
 			time = 30
 		}
 		Client.showTitle("", "&eGate destroyed", 0, time, 10)
+		gateNotDestroyed.erase()
 		return
 	}
 	if (subtitle.includes("The gate will open in 5 seconds!") || subtitle.includes("The Core entrance is opening!")) {
@@ -228,7 +237,7 @@ register("step", () => {
 			currentSplit = "Enter"
 			splitChanged.trigger()
 			if (!Settings.Splits) return
-			Utils.debugLog("&aEnter &7phase of dungeon started.")
+			Utils.debugLog("&aEnter &7phase started.")
 			Utils.debugLog("You are in Floor "+Utils.getDungeonFloor())
 		}            
 	}
@@ -241,8 +250,10 @@ register("step", () => {
 		}, 100)
 		currentSplit = "Term2"
 		splitChanged.trigger()
+		onlyGateMissing = false
 		triggerSectionComplete()
 		if (!Settings.Splits) return
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Terminal Section 1 completed in "+Utils.formatSmallNumber(timers.term1, 2)+"s")
 		Utils.chatLog("&6Terminal Section 1 &7completed in&a "+Utils.formatSmallNumber(timers.term1, 2)+"s")
 		Utils.debugLog("&6Terminal Section 2 &7started.")
 	//Terminal section 3
@@ -253,8 +264,10 @@ register("step", () => {
 		}, 100)
 		currentSplit = "Term3"
 		splitChanged.trigger()
+		onlyGateMissing = false
 		triggerSectionComplete()
 		if (!Settings.Splits) return
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Terminal Section 2 completed in "+Utils.formatSmallNumber(timers.term2, 2)+"s")
 		Utils.chatLog("&6Terminal Section 2 &7completed in&a "+Utils.formatSmallNumber(timers.term2, 2)+"s")
 		Utils.debugLog("&6Terminal Section 3 &7started.")
 	//Terminal section 4
@@ -265,8 +278,10 @@ register("step", () => {
 		}, 100)
 		currentSplit = "Term4"
 		splitChanged.trigger()
+		onlyGateMissing = false
 		triggerSectionComplete()
 		if (!Settings.Splits) return
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Terminal Section 3 completed in "+Utils.formatSmallNumber(timers.term3, 2)+"s")
 		Utils.chatLog("&6Terminal Section 3 &7completed in&a "+Utils.formatSmallNumber(timers.term3, 2)+"s")
 		Utils.debugLog("&6Terminal Section 4 &7started.")
 	//Goldor
@@ -274,11 +289,16 @@ register("step", () => {
 		allTermsDone = false
 		currentSplit = "Goldor"
 		splitChanged.trigger()
+		onlyGateMissing = false
 		triggerSectionComplete()
 		if (!Settings.Splits) return
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Terminal Section 4 completed in "+Utils.formatSmallNumber(timers.term4, 2)+"s")
+		setTimeout(() => {
+			if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Terminals completed in "+Utils.formatSmallNumber(timers.term1+timers.term2+timers.term3+timers.term4, 2)+"s")
+		}, 50);
 		Utils.chatLog("&6Terminal Section 4 &7completed in&a "+Utils.formatSmallNumber(timers.term4, 2)+"s")
 		Utils.chatLog("&6Terminals &7completed in &a"+Utils.formatSmallNumber(timers.term1+timers.term2+timers.term3+timers.term4, 2)+"s")
-		Utils.debugLog("&eGoldor &7phase of dungeon started.")
+		Utils.debugLog("&eGoldor &7phase started.")
 	}
 
 	//Update the GUI
@@ -333,26 +353,32 @@ register("chat", () => {
 
 //Non F7/M7 bosses start and end
 register("chat", (msg) => {
-	if (bossStart.includes(ChatLib.removeFormatting(msg))) {
+	msg = ChatLib.removeFormatting(msg)
+	if (bossStart.includes(msg)) {
 		enterDone = true
 		currentSplit = "Maxor"
 		splitChanged.trigger()
 		if (!Settings.Splits) return
-		Utils.chatLog("&aEnter &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.enter, 2)+"s")
-		Utils.debugLog("&bBoss &7phase of dungeon started.")
+		Utils.chatLog("&aEnter &7phase completed in "+Utils.formatSmallNumber(timers.enter, 2)+"s")
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Enter phase completed in "+Utils.formatSmallNumber(timers.enter, 2)+"s")
+		Utils.debugLog("&bBoss &7phase started.")
 	}
-	if (ChatLib.removeFormatting(msg).includes("Livid: Impossible! How did you figure out which one I was?!")) {
+	if (msg.includes("Livid: Impossible! How did you figure out which one I was?!")) {
 		currentSplit = "Nothing"
 		splitChanged.trigger()
 		if (!Settings.Splits) return
-		Utils.chatLog("&bBoss &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
+		Utils.chatLog("&bBoss &7phase completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Boss phase completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
 		Utils.debugLog("&aDungeon Completed")
 	}
-	if (bossEnd.includes(ChatLib.removeFormatting(msg))) {
+
+
+	if (bossEnd.includes(msg) || (msg.startsWith("                      ☠ Defeated Thorn in ") && Utils.getDungeonFloor() == 11 && currentSplit == "Boss")) {
 		currentSplit = "Nothing"
 		splitChanged.trigger()
 		if (!Settings.Splits) return
-		Utils.chatLog("&bBoss &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Boss phase completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
+		Utils.chatLog("&bBoss &7phase completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
 		Utils.debugLog("&aDungeon Completed")
 	}
 }).setCriteria("${msg}")
@@ -363,8 +389,9 @@ register("chat", () => {
 	currentSplit="Maxor"
 	splitChanged.trigger()
 	if (Settings.Splits) {
-		Utils.chatLog("&aEnter &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.enter, 2)+"s")
-		Utils.debugLog("&bMaxor &7phase of dungeon started.")
+		if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Enter phase completed in "+Utils.formatSmallNumber(timers.enter, 2)+"s")
+		Utils.chatLog("&aEnter &7phase completed in "+Utils.formatSmallNumber(timers.enter, 2)+"s")
+		Utils.debugLog("&bMaxor &7phase started.")
 	}
 	if (Utils.getDungeonClass() !== "Archer") return
 	if (Utils.getDungeonFloor() !== 7) return
@@ -378,22 +405,25 @@ register("chat", () => {
 	if (!Settings.Splits) return
 	splitChanged.trigger()
 	currentSplit="Storm"
-	Utils.chatLog("&bMaxor &7phase of dungeon completed in&a "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
-	Utils.debugLog("&dStorm &7phase of dungeon started.")
+	if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Maxor phase completed in "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
+	Utils.chatLog("&bMaxor &7phase completed in&a "+Utils.formatSmallNumber(timers.maxor, 2)+"s")
+	Utils.debugLog("&dStorm &7phase started.")
 }).setCriteria("[BOSS] Storm: Pathetic Maxor, just like expected.")
 
 //Terminal Section 1
 register("chat", () => {
-	if (Settings.compactTerms) {
-		termCompactor.register()
-	}
+	if (Settings.compactTerms) termCompactor.register()
 	currentSplit="Term1"
 	splitChanged.trigger()
+	allTermsDone = false
+	gateDestroyed = false
+	onlyGateMissing = false
 	lastHowmanyeth = 0
 	lastTotal = 0
 	if (!Settings.Splits) return
+	if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Storm phase completed in "+Utils.formatSmallNumber(timers.storm, 2)+"s")
 	Utils.debugLog("&6Terminal Section 1 &7started.")
-	Utils.chatLog("&dStorm &7phase of dungeon completed in&a "+Utils.formatSmallNumber(timers.storm, 2)+"s")
+	Utils.chatLog("&dStorm &7phase completed in&a "+Utils.formatSmallNumber(timers.storm, 2)+"s")
 }).setCriteria("[BOSS] Goldor: Who dares trespass into my domain?")
 
 //Necron
@@ -403,8 +433,9 @@ register("chat", (msg) => {
 	currentSplit="Necron"
 	splitChanged.trigger()
 	if (!Settings.Splits) return
-	Utils.chatLog("&eGoldor &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.goldor, 2)+"s")
-	Utils.debugLog("&cNecron &7phase of dungeon started.")
+	if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Goldor phase completed in "+Utils.formatSmallNumber(timers.goldor, 2)+"s")
+	Utils.chatLog("&eGoldor &7phase completed in "+Utils.formatSmallNumber(timers.goldor, 2)+"s")
+	Utils.debugLog("&cNecron &7phase started.")
 
 }).setCriteria("${msg}")
 
@@ -418,8 +449,9 @@ register("chat", () => {
 	if (Utils.getDungeonFloor() == 14) currentSplit = "Dragons"
 	splitChanged.trigger()
 	if (!Settings.Splits) return
-	Utils.chatLog("&cNecron &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.necron, 2)+"s")
-	Utils.debugLog("&5Dragons &7phase of dungeon started.")
+	if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Necron phase completed in "+Utils.formatSmallNumber(timers.necron, 2)+"s")
+	Utils.chatLog("&cNecron &7phase completed in "+Utils.formatSmallNumber(timers.necron, 2)+"s")
+	Utils.debugLog("&5Dragons &7phase started.")
 }).setCriteria("[BOSS] Necron: All this, for nothing...")
 
 //Dragons end
@@ -429,7 +461,8 @@ register("chat", (msg) => {
 	currentSplit = "Nothing"
 	splitChanged.trigger()
 	if (!Settings.Splits) return
-	Utils.chatLog("&5Dragons &7phase of dungeon completed in "+Utils.formatSmallNumber(timers.dragons, 2)+"s")
+	if (Settings.sendSplits) ChatLib.command("pc [shaweelAddons] Dragons phase completed in "+Utils.formatSmallNumber(timers.dragons, 2)+"s")
+	Utils.chatLog("&5Dragons &7phase completed in "+Utils.formatSmallNumber(timers.dragons, 2)+"s")
 	Utils.debugLog("&aDungeon completed")
 }).setCriteria("${msg}")
 
@@ -452,8 +485,8 @@ register("chat", () => {
 
 //Gate not blown
 register("chat", () => {
-	if (!compactTerms) return
-	Utils.drawCustomTitle("&4&lGate not destroyed", 500, 750, 500)
+	if (!Settings.compactTerms) return
+	gateNotDestroyed = Utils.drawCustomTitle("&4&lGate not destroyed", 500, 750, 500)
 	Utils.playSound("random.anvil_land", 1, 1)
 }).setCriteria("The gate will open in 5 seconds!")
 

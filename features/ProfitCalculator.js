@@ -20,7 +20,7 @@ function updateBazaar() {
 }
 function updateAuction() {
 	request({
-		url: "https://moulberry.codes/lowestbin.json",
+		url: "https://lowestbin.snailify.workers.dev",
 		json: true
 	}).then(data => {
 		ah = data
@@ -362,6 +362,9 @@ function getProfit(name) {
 	}
 	if (name.includes("Shadow Warp")) {
 		profit = bz.SHADOW_WARP_SCROLL.quick_status.sellPrice
+	}
+	if (name.includes("Implosion")) {
+		profit = bz.IMPLOSION_SCROLL.quick_status.sellPrice
 	}
 	if (name.includes("Red Scarf")) {
 		profit = bz.RED_SCARF.quick_status.sellPrice

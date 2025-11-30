@@ -1,213 +1,339 @@
 import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty} from "Vigilance"
 
-@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.12", {
+@Vigilant("shaweelAddons", "shaweelAddons-ctjs-1.3.13", {
 	getCategoryComparator: () => (a, b) => {
-		const categories = ["General", "Dungeons", "Slayer", "Fishing", "Miscellaneous"]
+		const categories = ["General", "Dungeons", "Slayers", "Fishing", "Miscellaneous"]
 		return categories.indexOf(a.name) - categories.indexOf(b.name)
 	}
 })
 
 class Settings {
-	@SwitchProperty({
-		name: "Show title on rat kill",
-		description: "When enabled you will see a title whenever you kill a rat",
-		subcategory: "Rats",
-		category: "Miscellaneous"
+	// ------------------------------------------
+	// General
+	// ------------------------------------------
+	@ButtonProperty({
+		name: "Move GUIs",
+		description: "You can also do /shaweeladdons gui",
+		category: "General",
+		subcategory: "",
+		placeholder: "Move"
 	})
-	ratTitle = false
+	Action() {
+		ChatLib.command("shaweeladdons gui", true)
+	}
+
+
+
+
+	// Low Health Alert
+	@SwitchProperty({
+		name: "Low Health Alert",
+		description: "Alerts you with a title when you're below half health",
+		subcategory: "Low Health Alert",
+		category: "General"
+	})
+	lhtitle = false
 
 	@TextProperty({
-		name: "Rat kill text",
-		description: "The text you will see whenever you kill a rat",
-		subcategory: "Rats",
-		category: "Miscellaneous"
+		name: "Low Health Text",
+		description: "The text of the title that alerts you when you're below half health",
+		subcategory: "Low Health Alert",
+		category: "General"
 	})
-	ratText = "&aRat Killed!"
+	lhtext = "&4&lLow health!"
 
 	@SwitchProperty({
-		name: "Play sound on rat kill",
-		description: "When enabled a sound, which you can change in the assets will play whenever you kill a rat",
-		subcategory: "Rats",
-		category: "Miscellaneous"
+		name: "Play sound on low health",
+		description: "Alerts you with a sound when you're below half health",
+		subcategory: "Low Health Alert",
+		category: "General"
 	})
-	ratSound = false
+	lhsound = false
+
+	// ------------------------------------------
+	// Dungeons
+	// ------------------------------------------
+
+	//Extra Life Items
+	@SwitchProperty({
+		name: "Bonzo's Mask Alert",
+		description: "Alerts you with a title when your Bonzo's Mask pops",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	bonzoTitle = false
+
+	@TextProperty({
+		name: "Bonzo's Mask Text",
+		description: "The text of the title that alerts you when your Bonzo's Mask pops",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	bonzoText = "&cBonzo Mask Popped!"
+
+	@SwitchProperty({
+		name: "Bonzo's Mask Sound",
+		description: "Alerts you with a sound when your Bonzo's Mask pops",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	bonzoSound = false
+
+
+
+	@SwitchProperty({
+		name: "Spirit Mask Alert",
+		description: "Alerts you with a title when your Spirit Mask pops",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	spiritTitle = false
+
+	@TextProperty({
+		name: "Spirit Mask Text",
+		description: "The text of the title that alerts you whenever your Spirit Mask pops",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	spiritText = "&cSpirit Mask Popped!"
+
+	@SwitchProperty({
+		name: "Spirit Mask Sound",
+		description: "Alerts you with a sound when your Spirit Mask pops",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	spiritSound = false
+
+
+
+	@SwitchProperty({
+		name: "Phoenix Alert",
+		description: "Alerts you with a title when your Phoenix dies",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	phoenixTitle = false
+
+	@TextProperty({
+		name: "Phoenix Text",
+		description: "The text of the title that alerts you when your Phoenix dies",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	phoenixText = "&cPhoenix Died!"
+
+	@SwitchProperty({
+		name: "Phoenix Sound",
+		description: "Alerts you with a sound whenever your Phoenix dies",
+		subcategory: "Extra Life Items",
+		category: "Dungeons"
+	})
+	phoenixSound = false
+
+
+
+
+	//Floor 7
+	@SwitchProperty({
+		name: "Alert Class Milestone",
+		description: "Alerts you to get class milestone in Maxor if you're playing Archer in F7",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	cmtitle = false
+
+
+
+	@SwitchProperty({
+		name: "Crystal Picked Up Alert",
+		description: "Alerts you with a title when you pick up an Energy Crystal in Maxor",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	crystalTitle = false 
+
+	@TextProperty({
+		name: "Crystal Picked Up Text",
+		description: "The text of the title that alerts you when you pick up an Energy Crystal in Maxor",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	crystalText = "&dCrystal Picked Up!" 
+
+	@SwitchProperty({
+		name: "Crystal Picked Up Sound",
+		description: "Alerts you with a sound when you pick up an Energy Crystal in Maxor",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	crystalSound = false 
+
+
+	@SwitchProperty({
+		name: "Crystal Placed Alert",
+		description: "Alerts you with a title when you place an Energy Crystal in Maxor",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	crystalPlaceTitle = false 
+
+	@TextProperty({
+		name: "Crystal Placed Text",
+		description: "The text of the title that alerts you when you place an Energy Crystal in Maxor",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	crystalPlaceText = "&dCrystal Placed!" 
+
+	@SwitchProperty({
+		name: "Crystal Placed Sound",
+		description: "Alerts you with a sound when you place an Energy Crystal in Maxor",
+		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	crystalPlaceSound = false 
+
+
 
 	@SwitchProperty({
 		name: "Purple Pad Alert",
-		description: "When enabled you will see a title when you need to enter purple pad, and when you need to exit purple pad.",
+		description: "Alerts you with titles exactly when you need to enter and exit Purple Pad when doing py",
 		subcategory: "Floor 7",
-		category: "Dungeons",
+		category: "Dungeons"
 	})
 	padTitle = false
 
 	@SwitchProperty({
 		name: "Purple Pad Sound",
-		description: "When enabled a sound will play, when you need to enter purple pad, and when you need to exit purple pad.",
+		description: "Alerts you with sounds exactly when you need to enter and exit Purple Pad when doing py",
 		subcategory: "Floor 7",
-		category: "Dungeons",
+		category: "Dungeons"
 	})
 	padSound = false
 
 	@SwitchProperty({
-		name: "Tick timers",
-		description: "Tick timer for dungeons",
-		subcategory: "Tick Timers",
-		category: "Dungeons",
-	})
-	tick = false
-
-	@SwitchProperty({
-		name: "Use ticks",
-		description: "Uses ticks instead of seconds in the tick timers",
-		subcategory: "Tick Timers",
-		category: "Dungeons",
-	})
-	useTicks = false
-
-	@SwitchProperty({
-		name: "Remove label",
-		description: "Removes the label saying which tick timer it is",
-		subcategory: "Tick Timers",
-		category: "Dungeons",
-	})
-	removeLabel = false
-	
-	@SwitchProperty({
-		name: "Secret tick timer",
-		description: "Secret tick timer for when bats items and wither essences spawn",
-		subcategory: "Tick Timers",
-		category: "Dungeons",
-	})
-	secretTick = false
-
-	@SwitchProperty({
-		name: "Outbounds tick timer",
-		description: "Tick timer for before the dungeon starts",
-		subcategory: "Tick Timers",
-		category: "Dungeons",
-	})
-	outTick = false
-
-	@SwitchProperty({
 		name: "Tank only",
-		description: "When enabled Purple Pad Alert and Sound will only work if you're playing tank.",
+		description: "Makes Purple Pad Alert and Purple Pad Sound only work when you're playing Tank",
 		subcategory: "Floor 7",
-		category: "Dungeons",
+		category: "Dungeons"
 	})
 	padTank = false
-	
+
+
+
 	@SwitchProperty({
-		name: "Alert blow gate",
-		description: "When enabled you will see a title whenever you need to blow the gate in Floor 7",
-		subcategory: "Floor 7",
+		name: "Compact Terminals",
+		description: "An objectively better terminals title system",
 		category: "Dungeons",
+		subcategory: "Floor 7"
+	})
+	compactTerms = false
+
+
+
+	@SwitchProperty({
+		name: "Blow Gate Alert",
+		description: "Alerts you with a title when you need to blow the gate in terminals",
+		subcategory: "Floor 7",
+		category: "Dungeons"
 	})
 	gateTitle = false
 
 	@TextProperty({
-		name: "Blow gate text",
-		description: "The text you will see whenever you need to blow the gate in Floor 7",
+		name: "Blow Gate Text",
+		description: "The text of the title that alerts you when you ned to blow the gate in terminals",
 		subcategory: "Floor 7",
-		category: "Dungeons",
+		category: "Dungeons"
 	})
 	gateText = "&4Blow Gate!"
 
 	@SwitchProperty({
-		name: "Blow gate sound",
-		description: "When enabled a sound will play whenever you need to blow the gate in Floor 7",
+		name: "Blow Gate Sound",
+		description: "Alerts you with a sound when you need to blow the gate in terminals",
 		subcategory: "Floor 7",
-		category: "Dungeons",
+		category: "Dungeons"
 	})
 	gateSound = false
 
+
+
+
+	//General
 	@SwitchProperty({
-		name: "Alert Bonzo Mask",
-		description: "When enabled you will see a title whenever your Bonzo Mask pops",
-		subcategory: "Extra Life Items",
+		name: "Bat Alert",
+		description: "Alerts you with a title when you kill a secret Bat",
 		category: "Dungeons",
+		subcategory: "General"
 	})
-	bonzoTitle = false
+	batAlert = false
 
 	@TextProperty({
-		name: "Bonzo Mask text",
-		description: "The text you will see whenever your Bonzo Mask pops",
-		subcategory: "Extra Life Items",
+		name: "Bat Text",
+		description: "The text of the title that alerts you when you kill a secret Bat",
 		category: "Dungeons",
+		subcategory: "General"
 	})
-	bonzoText = "&cBonzo Mask Popped!"
+	batText = "&aBat Killed"
 
-	@SwitchProperty({
-		name: "Bonzo Mask sound",
-		description: "When enabled a sound will play whenever your Bonzo Mask pops",
-		subcategory: "Extra Life Items",
-		category: "Dungeons",
-	})
-	bonzoSound = false
 
+	
 	@SwitchProperty({
-		name: "Alert Spirit Mask",
-		description: "When enabled you will see a title whenever your Spirit Mask pops",
-		subcategory: "Extra Life Items",
+		name: "Auto Party Finder Message",
+		description: "Automatically sends a message when someone joins the Party Finder party",
 		category: "Dungeons",
+		subcategory: "General"
 	})
-	spiritTitle = false
+	pfMsg = false
 
 	@TextProperty({
-		name: "Spirit Mask text",
-		description: "The text you will see whenever your Spirit Mask pops",
-		subcategory: "Extra Life Items",
+		name: "Auto Party Finder Message Message",
+		description: "The message you automatically send when someone joins the Party Finder party",
 		category: "Dungeons",
+		subcategory: "General"
 	})
-	spiritText = "&cSpirit Mask Popped!"
-
-	@SwitchProperty({
-		name: "Spirit Mask sound",
-		description: "When enabled a sound will play whenever your Spirit Mask pops",
-		subcategory: "Extra Life Items",
-		category: "Dungeons",
-	})
-	spiritSound = false
-
-	@SwitchProperty({
-		name: "Alert Phoenix",
-		description: "When enabled you will see a title whenever your Phoenix dies",
-		subcategory: "Extra Life Items",
-		category: "Dungeons",
-	})
-	phoenixTitle = false
+	pfMsgMsg = "I'm AFK!"
 
 	@TextProperty({
-		name: "Phoenix text",
-		description: "The text you will see whenever your Phoenix dies",
-		subcategory: "Extra Life Items",
+		name: "Auto Party Finder Message Delay",
+		description: "The delay in miliseconds before you automatically send a message when someone joins the Party Finder party",
 		category: "Dungeons",
+		subcategory: "General"
 	})
-	phoenixText = "&cPhoenix Died!"
+	pfMsgDelay = "500"
+
+
 
 	@SwitchProperty({
-		name: "Phoenix sound",
-		description: "When enabled a sound will play whenever your Phoenix dies",
-		subcategory: "Extra Life Items",
+		name: "Splits",
+		description: "Dungeon splits with a ton of information",
 		category: "Dungeons",
+		subcategory: "General"
 	})
-	phoenixSound = false
+	Splits = false
 
 	@SwitchProperty({
-		name: "Force yourself on rat kill",
-		description: "Usually rat kill doesn't trigger if you're not close to it(15 blocks - X, Z and 5 blocks Y), when this is enabled it will trigger no matter how far you are, this could be helpful if you're sniping them from a long distance, but could also hurt you by triggering when someone else kills it, while you're minding your own bussiness.",
-		subcategory: "Rats",
-		category: "Miscellaneous",
+		name: "Send Split Times",
+		description: "Sends Dungeon split times in Party chat",
+		category: "Dungeons",
+		subcategory: "General"
 	})
-	forceRat = false
+	sendSplits = false
+
+
 
 	@SwitchProperty({
-		name: "Chat Commands",
-		description: "Party chat commands, for example !warp for warping !pt for party transfer etc.",
-		subcategory: "General",
-		category: "Miscellaneous",
+		name: "Dungeon Chest Profit",
+		description: "Calculates profit in Dungeon chests and the Croesus menu",
+		category: "Dungeons",
+		subcategory: "General"
 	})
-	chatCommands = false
+	chestProfit = false
 
+
+
+
+	//Leaping
 	@SwitchProperty({
 		name: "Leap Overlay",
 		description: "A better gui for leaping",
@@ -226,107 +352,205 @@ class Settings {
 
 	@SwitchProperty({
 		name: "Leap Keybinds",
-		description: "Adds keybinds to the leap overlay, configure these in your controls",
+		description: "Adds keybinds to the leap overlay, configure these in your controls, if you're facing issues with conflicting keybinds, install the Modern Keybinding mod and enable Non-conflicting keybinds",
 		subcategory: "Leaping",
 		category: "Dungeons",
 	})
 	leapKeybinds = false
-	
-	@SwitchProperty({
-		name: "Announce mimic killed in chat",
-		description: "When enabled you will send a chat message whenever mimic is killed",
-		subcategory: "General",
-		category: "Dungeons",
-	})
-	mimicAnnounce = false
 
-	@TextProperty({
-		name: "Mimic kill announcement",
-		description: "The text you will send in chat whenever mimic is killed",
-		subcategory: "General",
-		category: "Dungeons",
-	})
-	mimicAnnounceText = "Mimic Killed!"
 
+
+
+	//Mimic and Prince
 	@SwitchProperty({
-		name: "Show title on mimic kill",
-		description: "When enabled you will see a title whenever mimic is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Mimic Killed Alert",
+		description: "Alerts you with a title when Mimic gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
 	mimicTitle = false
 
 	@TextProperty({
-		name: "Mimic kill text",
-		description: "The text you will see whenever mimic is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Mimic Killed Text",
+		description: "The text of the title that alerts you when Mimic gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
 	mimicText = "&aMimic Killed!"
 
 	@SwitchProperty({
-		name: "Play sound on mimic kill",
-		description: "When enabled a sound, which you can change in the assets will play whenever mimic is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Mimic Killed Sound",
+		description: "Alerts you with a sound when Mimic gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
 	mimicSound = false
 
 	@SwitchProperty({
-		name: "Announce prince killed in chat",
-		description: "When enabled you will send a chat message whenever prince is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Send Mimic Killed",
+		description: "Sends a chat message when Mimic gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
-	princeAnnounce = false
+	mimicAnnounce = false
 
 	@TextProperty({
-		name: "Prince kill announcement",
-		description: "The text you will send in chat whenever prince is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Mimic Killed Message",
+		description: "The chat message you send when Mimic gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
-	princeAnnounceText = "Prince Killed!"
+	mimicAnnounceText = "Mimic Killed!"
+
+
 
 	@SwitchProperty({
-		name: "Show title on prince kill",
-		description: "When enabled you will see a title whenever prince is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Prince Killed Alert",
+		description: "Alerts you with a title when Prince gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
 	princeTitle = false
 
 	@TextProperty({
-		name: "Prince kill text",
-		description: "The text you will see whenever prince is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Prince Killed Text",
+		description: "The text of the title that alerts you when Prince gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
 	princeText = "&aPrince Killed!"
 
 	@SwitchProperty({
-		name: "Play sound on prince kill",
-		description: "When enabled a sound, which you can change in the assets will play whenever prince is killed",
-		subcategory: "General",
-		category: "Dungeons",
+		name: "Prince Killed Sound",
+		description: "Alerts you with a sound when Prince gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
 	princeSound = false
 
-	@ButtonProperty({
-		name: "Move GUIs",
-		description: "You can also do /shaweeladdons gui",
-		category: "General",
-		subcategory: "",
-		placeholder: "Move"
+	@SwitchProperty({
+		name: "Send Prince Killed",
+		description: "Sends a chat message when Prince gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
 	})
-	Action() {
-		ChatLib.command("shaweeladdons gui", true)
-	}
+	princeAnnounce = false
+
+	@TextProperty({
+		name: "Prince Killed Message",
+		description: "The chat message you send when Prince gets killed",
+		subcategory: "Mimic and Prince",
+		category: "Dungeons"
+	})
+	princeAnnounceText = "Prince Killed!"
+
+
+
+
+	//Tick Timers
+@SwitchProperty({
+		name: "Tick Timers",
+		description: "Tick Timers for dungeons",
+		subcategory: "Tick Timers",
+		category: "Dungeons"
+	})
+	tick = false
+	
+	@SwitchProperty({
+		name: "Secret Tick Timer",
+		description: "A Secret Tick Timer for when Bats, Items and Wither Essences spawn",
+		subcategory: "Tick Timers",
+		category: "Dungeons"
+	})
+	secretTick = false
 
 	@SwitchProperty({
+		name: "Outbounds Tick Timer",
+		description: "A Tick timer for the death ticks before the dungeon starts",
+		subcategory: "Tick Timers",
+		category: "Dungeons"
+	})
+	outTick = false
+
+	@SwitchProperty({
+		name: "Use Ticks",
+		description: "Uses ticks instead of seconds in the Tick Timers",
+		subcategory: "Tick Timers",
+		category: "Dungeons"
+	})
+	useTicks = false
+
+	@SwitchProperty({
+		name: "Remove Label",
+		description: "Removes the label saying which Tick Timer it is",
+		subcategory: "Tick Timers",
+		category: "Dungeons"
+	})
+	removeLabel = false
+
+
+
+
+	//Wishing
+	@SwitchProperty({
+		name: "Wish Alert",
+		description: "Alerts you with a title when you're supposed to use the Wish ability when playing Healer",
+		category: "Dungeons",
+		subcategory: "Wishing"
+	})
+	wishTitle = false 
+
+	@TextProperty({
+		name: "Wish Text",
+		description: "The text of the title that alerts you when you're supposed to use the Wish ability when playing Healer",
+		category: "Dungeons",
+		subcategory: "Wishing"
+	})
+	wishText = "&4Wish!" 
+
+	@SwitchProperty({
+		name: "Wish Sound",
+		description: "Alerts you with a sound when you're supposed to use the Wish ability when playing Healer",
+		category: "Dungeons",
+		subcategory: "Wishing"
+	})
+	wishSound = false 
+
+
+
+	@SwitchProperty({
+		name: "Wished Alert",
+		description: "Alerts you with a title when you use the Wish ability when playing Healer",
+		category: "Dungeons",
+		subcategory: "Wishing"
+	})
+	wishedTitle = false
+
+	@TextProperty({
+		name: "Wished Text",
+		description: "The text of the title that alerts you when you use the Wish ability when playing Healer",
+		category: "Dungeons",
+		subcategory: "Wishing"
+	})
+	wishedText = "&aWished" 
+
+	@SwitchProperty({
+		name: "Wished Sound",
+		description: "Alerts you with a sound when you use the Wish ability when playing Healer",
+		category: "Dungeons",
+		subcategory: "Wishing"
+	})
+	wishedSound = false 
+
+	// ------------------------------------------
+	// Slayers
+	// ------------------------------------------
+
+	//Enderman Slayer
+	@SwitchProperty({
 		name: "Katana HUD",
-		description: "When enabled there will be a HUD displaying whether the enderman slayer katana's ability is currently enabled",
-		category: "Slayer",
+		description: "When enabled there will be a HUD displaying whether the Enderman Slayer Katana's ability is currently enabled with a timer",
+		category: "Slayers",
 		subcategory: "Enderman Slayer"
 	})
 	katanaHud = false
@@ -334,209 +558,127 @@ class Settings {
 	@SwitchProperty({
 		name: "Katana Ability Expired Sound",
 		description: "When enabled a sound will play whenever the Katana ability expires",
-		category: "Slayer",
+		category: "Slayers",
 		subcategory: "Enderman Slayer"
 	})
 	expireSound = false
 
-	@SwitchProperty({
-		name: "Show title on low health",
-		description: "When enabled you will see a title whenever you get below 50 percent hp",
-		subcategory: "Low Health Alert",
-		category: "General",
-	})
-	lhtitle = false
+	// ------------------------------------------
+	// Fishing
+	// ------------------------------------------
 
-	@TextProperty({
-		name: "Low health alert text",
-		description: "The text you will see whenever you get below 50 percent hp",
-		subcategory: "Low Health Alert",
-		category: "General",
-	})
-	lhtext = "&4&lLow health!"
-
+	//Sea Creature Alert
 	@SwitchProperty({
-		name: "Play sound on low health",
-		description: "When enabled a sound, which you can change in the assets will play whenever you get below 50 percent hp",
-		subcategory: "Low Health Alert",
-		category: "General",
-	})
-	lhsound = false
-
-	@SwitchProperty({
-		name: "Alert get class milestone",
-		description: "When enabled you will be alerted to get class milestone 3 in maxor if you're playing on archer in f7",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	cmtitle = false
-
-	@SwitchProperty({
-		name: "Wished",
-		description: "Shows a title when you wish.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	wishedTitle = false 
-	@TextProperty({
-		name: "Wished Text",
-		description: "The text that shows when you wish.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	wishedText = "&aWished" 
-	@SwitchProperty({
-		name: "Wished Sound",
-		description: "Plays a sound when you wish.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	wishedSound = false 
-
-	@SwitchProperty({
-		name: "Wish Alert",
-		description: "Shows a title when you're supposed to wish.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	wishTitle = false 
-	@TextProperty({
-		name: "Wish Text",
-		description: "The text that shows when you're supposed to wish.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	wishText = "&4Wish!" 
-	@SwitchProperty({
-		name: "Wish Sound",
-		description: "Plays a sound when you should wish.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	wishSound = false 
-	@SwitchProperty({
-		name: "Crystal Alert",
-		description: "Shows a title when you pick up a crystal in Maxor",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	crystalTitle = false 
-	@TextProperty({
-		name: "Crystal Text",
-		description: "The text that shows when you pick up a crystal in Maxor",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	crystalText = "&dCrystal Picked Up!" 
-	@SwitchProperty({
-		name: "Crystal Sound",
-		description: "Plays a sound when you pick up a crystal in Maxor",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	crystalSound = false 
-	@SwitchProperty({
-		name: "Crystal Placed Alert",
-		description: "Shows a title when you place a crystal in Maxor",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	crystalPlaceTitle = false 
-	@TextProperty({
-		name: "Crystal Placed Text",
-		description: "The text that shows when you place a crystal in Maxor",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	crystalPlaceText = "&dCrystal Placed!" 
-	@SwitchProperty({
-		name: "Crystal Placed Sound",
-		description: "Plays a sound when you place a crystal in Maxor",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	crystalPlaceSound = false 
-
-	@SwitchProperty({
-		name: "Show title on sea creature catch",
-		description: "When enabled you will see a title whenever you catch a sea creature",
+		name: "Sea Creature Alert",
+		description: "Alerts you with a title when you catch Sea Creature",
 		category: "Fishing",
 		subcategory: "Sea Creature Alert"
 	})
 	sctitle = false
 
 	@TextProperty({
-		name: "Sea creature alert text",
-		description: "The text you will see whenever you catch a sea creature",
+		name: "Sea Creature Text",
+		description: "The text of the title that alerts you when you catch a Sea Creature",
 		category: "Fishing",
 		subcategory: "Sea Creature Alert"
 	})
 	sctext = "&aSea Creature!"
 
 	@SwitchProperty({
-		name: "Play sound on sea creature catch",
-		description: "When enabled a sound, which you can change in the assets will play whenever you catch a sea creature",
+		name: "Sea Creature Sound",
+		description: "Alerts you with a sound when you catch Sea Creature",
 		category: "Fishing",
 		subcategory: "Sea Creature Alert"
 	})
 	scsound = false
 
+	// ------------------------------------------
+	// Miscellaneous
+	// ------------------------------------------
+
+	//Miscellaneous
 	@SwitchProperty({
-		name: "Splits",
-		description: "Dungeon splits in dungeons.",
-		category: "Dungeons",
-		subcategory: "General"
+		name: "Chat Commands",
+		description: "Party chat commands, for example !warp for warping !pt for party transfer etc...",
+		subcategory: "Miscellaneous",
+		category: "Miscellaneous"
 	})
-	Splits = false
+	chatCommands = false
+
+
 
 	@SwitchProperty({
-		name: "Dungeon Chest Profit",
-		description: "Calculates profit in dungeon chests and the croesus menu.",
-		category: "Dungeons",
-		subcategory: "General"
-	})
-	chestProfit = false
-
-	@SwitchProperty({
-		name: "Compact terminals",
-		description: "Compacts the terminal titles",
-		category: "Dungeons",
-		subcategory: "Floor 7"
-	})
-	compactTerms = false
-	
-	@SwitchProperty({
-		name: "Type stars in chat",
+		name: "Chat Stars",
 		description: "Allows you to type stars in chat, for example <10star> will turn into ✪✪✪✪✪➎, there's more possible ways to type this syntax.",
 		category: "Miscellaneous",
 		subcategory: "Miscellaneous"
 	})
 	stars = false
 
+
+
+
+	//Rats
+	@SwitchProperty({
+		name: "Rat Killed Alert",
+		description: "Alerts you with a title when you kill a rat",
+		subcategory: "Rats",
+		category: "Miscellaneous"
+	})
+	ratTitle = false
+
+	@TextProperty({
+		name: "Rat Killed Text",
+		description: "The text of the title that alerts you when you kill a rat",
+		subcategory: "Rats",
+		category: "Miscellaneous"
+	})
+	ratText = "&aRat Killed!"
+
+	@SwitchProperty({
+		name: "Rat Killed Sound",
+		description: "Alerts you with a sound when you kill a rat",
+		subcategory: "Rats",
+		category: "Miscellaneous"
+	})
+	ratSound = false
+
+	@SwitchProperty({
+		name: "Force Yourself",
+		description: "Usually rat kill doesn't trigger if you're not close to it(15 blocks - X, Z and 5 blocks Y), when this is enabled it will trigger no matter how far you are, this could be helpful if you're sniping them from a long distance, but could also hurt you by triggering when someone else kills it, while you're minding your own bussiness",
+		subcategory: "Rats",
+		category: "Miscellaneous",
+	})
+	forceRat = false
+
 	constructor() {
 		this.initialize(this)
-		this.addDependency("Sea creature alert text", "Show title on sea creature catch")
-		this.addDependency("Low health alert text", "Show title on low health")
-		this.addDependency("Rat kill text", "Show title on rat kill")
-		this.addDependency("Blow gate text", "Alert blow gate")
-		this.addDependency("Bonzo Mask text", "Alert Bonzo Mask")
-		this.addDependency("Spirit Mask text", "Alert Spirit Mask")
-		this.addDependency("Phoenix text", "Alert Phoenix")
-		this.addDependency("Mimic kill text", "Show title on mimic kill")
-		this.addDependency("Mimic kill announcement", "Announce mimic killed in chat")
-		this.addDependency("Prince kill text", "Show title on prince kill")
-		this.addDependency("Prince kill announcement", "Announce prince killed in chat")
+		this.addDependency("Sea Creature Text", "Sea Creature Alert")
+		this.addDependency("Low Health Text", "Low Health Alert")
+		this.addDependency("Rat Killed Text", "Rat Killed Alert")
+		this.addDependency("Blow Gate Text", "Blow Gate Alert")
+		this.addDependency("Bonzo's Mask Text", "Bonzo's Mask Alert")
+		this.addDependency("Spirit Mask Text", "Spirit Mask Alert")
+		this.addDependency("Phoenix Text", "Phoenix Alert")
+		this.addDependency("Mimic Killed Text", "Mimic Killed Alert")
+		this.addDependency("Mimic Killed Message", "Send Mimic Killed")
+		this.addDependency("Prince Killed Text", "Prince Killed Alert")
+		this.addDependency("Prince Killed Message", "Send Prince Killed")
 		this.addDependency("Katana Ability Expired Sound", "Katana HUD")
-		this.addDependency("Wished Text", "Wished")
+		this.addDependency("Wished Text", "Wished Alert")
 		this.addDependency("Wish Text", "Wish Alert")
-		this.addDependency("Crystal Text", "Crystal Alert")
+		this.addDependency("Crystal Picked Up Text", "Crystal Picked Up Alert")
 		this.addDependency("Crystal Placed Text", "Crystal Placed Alert")
 		this.addDependency("Leap Announce", "Leap Overlay")
 		this.addDependency("Leap Keybinds", "Leap Overlay")
-		this.addDependency("Outbounds tick timer", "Tick timers")
-		this.addDependency("Secret tick timer", "Tick timers")
-		this.addDependency("Use ticks", "Tick timers")
-		this.addDependency("Remove label", "Tick timers")
+		this.addDependency("Outbounds Tick Timer", "Tick Timers")
+		this.addDependency("Secret Tick Timer", "Tick Timers")
+		this.addDependency("Use Ticks", "Tick Timers")
+		this.addDependency("Remove Label", "Tick Timers")
+		this.addDependency("Send Split Times", "Splits")
+		this.addDependency("Bat Text", "Bat Alert")
+		this.addDependency("Auto Party Finder Message Delay", "Auto Party Finder Message")
+		this.addDependency("Auto Party Finder Message Message", "Auto Party Finder Message")
 	}
 }
 
