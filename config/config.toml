@@ -1,0 +1,160 @@
+
+[general]
+
+	[general.low_health_alert]
+		low_health_sound = false
+		low_health_alert = false
+		low_health_text = "&4&lLow health!"
+
+[slayers]
+
+	[slayers.enderman_slayer]
+		katana_hud = true
+		show_time_unit_in_katana_hud = true
+		katana_ability_expired_sound = true
+		katana_hud_time_unit = 2
+
+	[slayers.boss_and_miniboss_spawn_alert]
+		miniboss_spawn_text = "&cMiniboss Spawning!"
+		miniboss_spawn_sound = true
+		boss_spawn_sound = true
+		boss_spawn_alert = true
+		miniboss_spawn_alert = true
+		boss_spawn_text = "&cBoss Spawning!"
+
+[miscellaneous]
+
+	[miscellaneous.miscellaneous]
+		hide_action_bar = true
+		chat_stars = true
+		chat_commands = true
+
+	[miscellaneous."russian_commands/русские_команды"]
+		"sends_command/сказать_команду" = true
+		"russian_commands/русские_команды" = 2
+		"ignore_/msg/iгнорировать_/msg" = true
+		"ignore_/pc,_/cc,_/ac,_/gc,_/oc/iгнорировать_/pc,_/cc,_/ac,_/gc,_/oc" = true
+
+	[miscellaneous.rats]
+		rat_killed_text = "&aRat Killed!"
+		force_yourself = false
+		rat_killed_alert = false
+		rat_killed_sound = false
+
+[dungeons]
+
+	[dungeons.general]
+		send_split_times = true
+		auto_party_finder_message_delay = "500"
+		splits = true
+		bat_text = "&aBat Killed"
+		auto_party_finder_message_message = "IM AFK, IM SHITTING, BRB"
+		dungeon_chest_profit = true
+		auto_party_finder_message = false
+		bat_alert = false
+
+	[dungeons.tick_timers]
+		tick_timers_time_unit = 2
+		tick_timers = true
+		secret_tick_timer = false
+		show_time_unit = true
+		show_label = true
+		outbounds_tick_timer = true
+
+	[dungeons.padding]
+		healer = false
+		mage = false
+		purple_pad_tank = true
+		yellow_pad_healer = false
+		yellow_pad_alert = true
+		yellow_pad_sound = true
+		yellow_pad_archer = true
+		purple_pad_sound = true
+		yellow_pad_berserk = false
+		purple_pad_berserk = false
+		purple_pad_archer = false
+		yellow_pad_tank = false
+		purple_pad_mage = false
+		purple_pad_alert = true
+		purple_pad_healer = false
+		yellow_pad_mage = false
+
+	[dungeons.floor_7]
+		mage = false
+		blow_gate_sound = true
+		crystal_placed_alert = true
+		show_names = false
+		purple_pad_sound = true
+		yellow_pad_berserk = false
+		purple_pad_berserk = false
+		purple_pad_alert = true
+		blow_gate_alert = true
+		crystal_picked_up_text = "&dCrystal Picked Up!"
+		tank = true
+		healer = false
+		berserk = false
+		compact_terminals = true
+		alert_class_milestone = true
+		purple_pad_tank = false
+		blow_gate_text = "&4Blow Gate!"
+		show_classes = true
+		crystal_placed_text = "&dCrystal Placed!"
+		yellow_pad_archer = false
+		crystal_picked_up_alert = true
+		purple_pad_archer = false
+		yellow_pad_tank = false
+		archer = false
+		compact_maxor = true
+		crystal_picked_up_sound = true
+		crystal_placed_sound = true
+		compact_storm = true
+
+	[dungeons.mimic_and_prince]
+		prince_killed_sound = true
+		mimic_killed_alert = true
+		prince_killed_alert = true
+		mimic_killed_text = "&aMimic Killed!"
+		send_mimic_killed = true
+		send_prince_killed = true
+		mimic_killed_sound = true
+		prince_killed_text = "&aPrince Killed!"
+		prince_killed_message = "Prince Killed!"
+		mimic_killed_message = "Mimic Killed!"
+
+	[dungeons.wishing]
+		wished_sound = true
+		wished_alert = true
+		wish_text = "&4Wish!"
+		wished_text = "&aWished"
+		wish_alert = true
+		wish_sound = true
+
+	[dungeons.extra_life_items]
+		send_spirit_mask = true
+		"bonzo's_mask_alert" = true
+		phoenix_text = "&cPhoenix Died!"
+		"bonzo's_mask_text" = "&cBonzo's Mask Popped!"
+		phoenix_message = "Phoenix Died!"
+		send_phoenix = true
+		phoenix_sound = true
+		spirit_mask_alert = true
+		spirit_mask_text = "&cSpirit Mask Popped!"
+		"bonzo's_mask_message" = "Bonzo's Mask Popped!"
+		phoenix_alert = true
+		"send_bonzo's_mask" = true
+		spirit_mask_message = "Spirit Mask Popped!"
+		"bonzo's_mask_sound" = true
+		spirit_mask_sound = true
+
+	[dungeons.leaping]
+		leap_keybinds = true
+		leap_announce = true
+		leap_overlay = true
+
+[fishing]
+
+	[fishing.sea_creature_alert]
+		sea_creature_text = "&aSea Creature!"
+		sea_creature_alert = false
+		sea_creature_sound = false
+
