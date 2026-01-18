@@ -37,7 +37,7 @@ Video Tutorial: https://youtu.be/l_pyNJuHKDs
 8. Delete everything except the config directory
 9. Copy all files from the extracted archive into the shaweelAddons directory
 11. In Minecraft run the command */ct load*
-
+This will only work with updating from a version ≥1.4.0 to a version ≥1.4.0
 
 
 ![alt](https://i.imgur.com/HfWSFn3.png)

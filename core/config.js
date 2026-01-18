@@ -2,7 +2,7 @@ import {@Vigilant, @SwitchProperty, @TextProperty, @ButtonProperty, @SelectorPro
 
 const intDataType = Java.type("java.lang.Integer")
 
-@Vigilant("shaweelAddons/config", "shaweelAddons-ctjs-1.3.14", {
+@Vigilant("shaweelAddons/config", "shaweelAddons-ctjs-1.4.0", {
 	getCategoryComparator: () => (a, b) => {
 		const categories = ["General", "Dungeons", "Slayers", "Fishing", "Trackers", "Miscellaneous"]
 		return categories.indexOf(a.name) - categories.indexOf(b.name)

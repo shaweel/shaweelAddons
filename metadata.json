@@ -2,6 +2,6 @@
   "name": "shaweelAddons",
   "creator": "shaweel",
   "entry": "core/index.js",
-  "version": "1.3.14",
+  "version": "1.4.0",
   "requires": ["Vigilance", "requestV2"]
 }
