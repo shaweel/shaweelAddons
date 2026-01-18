@@ -27,6 +27,7 @@ Feature list is sizably outdated, the Features folder and the config.js file mig
 6. Move the folder named "shaweelAddons" from the .zip archive you downloaded to the modules directory
 Video Tutorial: https://youtu.be/l_pyNJuHKDs
 ## Safe updating
+***!!!This will only work with updating from a version ≥1.4.0 to a version ≥1.4.0!!!***
 - This should work on every operating system, tested on: Linux(Arch Linux)
 1. Download the file called *shaweelAddons-x.x.x.zip* from the ![latest release](https://github.com/shaweel/shaweelAddons/releases/latest)
 2. Extract the zip file
@@ -37,7 +38,6 @@ Video Tutorial: https://youtu.be/l_pyNJuHKDs
 8. Delete everything except the config directory
 9. Copy all files from the extracted archive into the shaweelAddons directory
 11. In Minecraft run the command */ct load*
-This will only work with updating from a version ≥1.4.0 to a version ≥1.4.0
 
 
 ![alt](https://i.imgur.com/HfWSFn3.png)
