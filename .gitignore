@@ -1,2 +1,6 @@
 changelog.txt
-config
+config/config.toml
+config/debugMode.txt
+config/leapKeybindsBackup.json
+config/positions.json
+config/shitters.json

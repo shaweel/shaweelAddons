@@ -17,7 +17,11 @@ if (shitters === null) {
 	utils.debugLog("File shitters.json &7didn't exist, creating it.")
 	shitters = []
 } else {
-	shitters = JSON.parse(shitters)
+	try {
+		shitters = JSON.parse(shitters)
+	} catch (error) {
+		shitters = []
+	}
 }
 
 register("chat", (player, dungeonClass, level) => {
